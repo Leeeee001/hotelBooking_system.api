@@ -1,0 +1,24 @@
+{
+  "name": "hotel-room_booking_api",
+  "version": "1.0.0",
+  "description": "test API for booking hotel-rooms",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Leeeee001/Hotel-Room_Booking_API.git"
+  },
+  "author": "Leeeee001",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Leeeee001/Hotel-Room_Booking_API/issues"
+  },
+  "homepage": "https://github.com/Leeeee001/Hotel-Room_Booking_API#readme",
+  "dependencies": {
+    "express": "^5.1.0",
+    "mongoose": "^8.14.2"
+  }
+}
