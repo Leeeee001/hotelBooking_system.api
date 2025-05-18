@@ -14,5 +14,5 @@ app.listen(port, () => {
   console.log(`Server listening on ${port}`);
 });
 
-dbConnect();
+dbConnect(); // database connection....
 
