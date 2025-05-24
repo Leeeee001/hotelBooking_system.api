@@ -1,6 +1,6 @@
 let mongoose = require("mongoose");
 
-let dbConnect = async () => {
+const dbConnect = async () => {
     try{
         await mongoose.connect(process.env.MONGO_URI, {
             useNewUrlParser: true,
