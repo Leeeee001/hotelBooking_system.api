@@ -5,10 +5,8 @@ let hotelSchema = mongoose.Schema({
   description: {type: String},
   address: {type: Number, required: true},
   pin: {type: number, required: true},
-  city: {type: String},
-  created_at: { type: Date, default: Date.now() },
-  updated_at: { type: Date, default: Date.now() },
-});
+  city: {type: String}
+}, { timestamps: true });
 
 let Hotel = mongoose.model("Hotel", hotelSchema);
 module.exports = Hotel;
