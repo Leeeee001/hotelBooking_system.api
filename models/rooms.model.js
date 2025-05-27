@@ -8,5 +8,5 @@ let roomSchema = mongoose.Schema({
   capasity: {type: Number}
 }, { timestamps: true });
 
-let Room = mongoose.model("Room", roomSchema);
-module.exports = Room;
+let Rooms = mongoose.model("Rooms", roomSchema);
+module.exports = Rooms;

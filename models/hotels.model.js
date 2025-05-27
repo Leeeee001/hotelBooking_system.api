@@ -8,5 +8,5 @@ let hotelSchema = mongoose.Schema({
   city: {type: String}
 }, { timestamps: true });
 
-let Hotel = mongoose.model("Hotel", hotelSchema);
-module.exports = Hotel;
+let Hotels = mongoose.model("Hotels", hotelSchema);
+module.exports = Hotels;
