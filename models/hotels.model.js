@@ -1,7 +1,7 @@
 let mongoose = require("mongoose");
 
 let hotelSchema = mongoose.Schema({
-  name: {type: String, required: true},
+  hotel_name: {type: String, required: true},
   description: {type: String},
   address: {type: Number, required: true},
   pin: {type: number, required: true},

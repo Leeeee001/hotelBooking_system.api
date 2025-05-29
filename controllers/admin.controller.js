@@ -1,18 +1,12 @@
 const User = require('../models/users.model')
 
-const userController = {
+const adminController = {
     register: async (req, res) => {
         try {
-            let userInfo = req.body;
-            let newUser = new User({
-                userName: userInfo.userName,
-                password: userInfo.password,
-                mobileNumber: userInfo.mobileNumber,
-                role: userInfo.role
-            });
-   
-            const data = await newUser.save();
-            console.log(data)
+            let userInfo = res.body;
+            
+
+
             
         } catch (error) {
             return res.status(500).json({ status: 500, error: error.message });

@@ -6,10 +6,10 @@ let userSchema = mongoose.Schema({
     phone_num: {type: String, required: true, unique: true, trim: true},
     hash_password: {type: String, required: true},
     role: {type: String, enum: ["user", "customer"], default: "user", required: true},
-    isActive: {type: Boolean, default: true},
-    isDeleted: {type: Boolean, default: false},
-    isVerified: {type: Boolean, default: false},
+    is_active: {type: Boolean, default: true},
+    is_deleted: {type: Boolean, default: false},
+    is_verified: {type: Boolean, default: false},
 }, { timestamps: true })
 
 let Users = mongoose.model("Users", userSchema)
-module.exports = Users
+module.exports = Users;

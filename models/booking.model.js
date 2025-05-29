@@ -5,7 +5,7 @@ let bookingSchema = mongoose.Schema({
   room_id: {type: mongoose.Schema.Types.ObjectId, ref: "Room"},
   room_Type: {type: String},
   days: {type: Number},
-  totalprice: {type: Number},
+  total_price: {type: Number},
 }, { timestamps: true });
 
 let Booking = mongoose.model("Booking", bookingSchema);
