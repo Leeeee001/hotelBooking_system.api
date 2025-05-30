@@ -5,7 +5,7 @@ let userSchema = mongoose.Schema({
     email: {type: String, required: true, unique: true, trim: true, lowercase: true},
     phone_num: {type: String, required: true, unique: true, trim: true},
     hash_password: {type: String, trim: true, required: true},
-    role: {type: String, enum: ["user", "admin"], default: "user"},
+    role: {type: String, enum: ["user", "admin"], default: "user", required: true},
     is_active: {type: Boolean, default: true},
     is_deleted: {type: Boolean, default: false},
     is_verified: {type: Boolean, default: false},

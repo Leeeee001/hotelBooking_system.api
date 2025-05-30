@@ -3,56 +3,95 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const authController = {
-  //register user by credentials.
+  //register user by credentials...
   register: async (req, res) => {
     try {
-      let userInfo = req.body;
-
-      // Checking user exist or not...
+      const { name, email, phone_num, hash_password, role } = req.body;
+  
+      // Check if user already exists
       const existingUser = await User.findOne({
-        $or: [{ email: userInfo.email }, { phone_num: userInfo.phone_num }],
+        $or: [{ email }, { phone_num }],
       });
-      if (existingUser)
+  
+      if (existingUser) {
         return res
           .status(400)
-          .json({ message: `${email} || ${phone_num} already exists` });
-
-      // Hashing password...
+          .json({ message: "Email or phone number already exists" });
+      }
+  
+      // Hash the password
       const salt = await bcrypt.genSalt(10);
-      const hashedPassword = await bcrypt.hash(userInfo.hash_password, salt);
-
-      let newUser = new User({
+      const hashedPassword = await bcrypt.hash(hash_password, salt);
+  
+      // Create new user
+      const newUser = new User({
         name,
         email,
         phone_num,
         hash_password: hashedPassword,
         role,
-        is_verified: true,
+        is_Verified: true, 
       });
-
+  
       const data = await newUser.save();
       console.log(data);
-
+  
       return res.status(201).json({ message: "User registered successfully" });
     } catch (error) {
       return res.status(500).json({ status: 500, error: error.message });
     }
   },
+  //login user by credentials...
   login: async (req, res) => {
     try {
-      let userInfo = req.body;
+      const { email, phone_num, password } = req.body;
 
-      // Checking user exist or not...
+      // Find user by email or phone number
       const existingUser = await User.findOne({
-        $or: [{ email: userInfo.email }, { phone_num: userInfo.phone_num }],
+        $or: [{ email }, { phone_num }],
       });
-      if (existingUser) {
-        return res.status(400).json({status: 400, error: "User already exists with this email or phone number"});
+
+      if (!existingUser) {
+        return res.status(404).json({
+          status: 404,
+          error: "User not found with provided email or phone number",
+        });
       }
 
-      //password checking for login...
-      const isMatch = await bcrypt.compare(password, user.hash_password);
+      // Check password
+      const isPasswordValid = await bcrypt.compare(
+        password,
+        existingUser.hash_password
+      );
+      if (!isPasswordValid) {
+        return res.status(401).json({
+          status: 401,
+          error: "Invalid password",
+        });
+      }
 
+      // Generate JWT token
+      const token = jwt.sign(
+        {
+          userId: existingUser._id,
+          role: existingUser.role,
+        },
+        process.env.JWT_SECRET || "yourSecretKey",
+        { expiresIn: "24h" }
+      );
+
+      return res.status(200).json({
+        status: 200,
+        message: "Login successful",
+        data: {
+          token,
+          user: {
+            name: existingUser.name,
+            email: existingUser.email,
+            role: existingUser.role,
+          },
+        },
+      });
     } catch (error) {
       return res.status(500).json({ status: 500, error: error.message });
     }
