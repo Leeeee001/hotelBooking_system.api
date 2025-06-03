@@ -6,6 +6,8 @@ let userSchema = mongoose.Schema({
     phone_num: {type: String, required: true, unique: true, trim: true},
     hash_password: {type: String, trim: true, required: true},
     role: {type: String, enum: ["user", "admin"], default: "user", required: true},
+    otp: { type: String },
+    otp_expiry: { type: Date },
     is_active: {type: Boolean, default: true},
     is_deleted: {type: Boolean, default: false},
     is_verified: {type: Boolean, default: false},

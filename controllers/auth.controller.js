@@ -16,7 +16,7 @@ const authController = {
       if (existingUser) {
         return res
           .status(400)
-          .json({ message: "Email or phone number already exists" });
+          .json({ message: "user already exists" });
       }
   
       // Hash the password
@@ -58,7 +58,7 @@ const authController = {
         });
       }
 
-      // Check password
+      // compare passwords
       const isPasswordValid = await bcrypt.compare(
         password,
         existingUser.hash_password

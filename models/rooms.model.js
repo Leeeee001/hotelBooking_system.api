@@ -5,7 +5,8 @@ let roomSchema = mongoose.Schema({
   room_Type: {type: String},
   description: {type: String},
   price_Per_Night: {type: Number},
-  capasity: {type: Number}
+  capasity: {type: Number},
+  isAvailable: {type: mongoose.Schema.Types.ObjectId, ref: "Room_Available"}
 }, { timestamps: true });
 
 let Room = mongoose.model("Room", roomSchema);

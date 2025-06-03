@@ -6,5 +6,5 @@ let roomAvailableSchema = mongoose.Schema({
   is_Booked: {type: Boolean},
 }, { timestamps: true });
 
-let Room_Available = mongoose.model("Room", roomAvailableSchema);
+let Room_Available = mongoose.model("Room_Available", roomAvailableSchema);
 module.exports = Room_Available;
