@@ -24,6 +24,7 @@
     "hbs": "^4.2.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.14.2",
+    "nodemailer": "^7.0.3",
     "zod": "^3.25.41"
   }
 }

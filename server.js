@@ -14,7 +14,7 @@ const port = process.env.PORT || 5000;
 
 
 
-// port listening....
+// server port listening....
 app.listen(port, () => {
   console.log(`🚀 Server listening on localhost:${port}`);
 });

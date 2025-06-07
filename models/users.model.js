@@ -3,7 +3,7 @@ let mongoose = require("mongoose")
 let userSchema = mongoose.Schema({
     name: {type: String, required: true},
     email: {type: String, required: true, unique: true, trim: true, lowercase: true},
-    phone_num: {type: String, required: true, unique: true, trim: true},
+    phone_num: {type: Number, required: true, unique: true, trim: true},
     hash_password: {type: String, trim: true, required: true},
     role: {type: String, enum: ["user", "admin"], default: "user", required: true},
     otp: { type: String },
