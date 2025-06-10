@@ -7,8 +7,8 @@ const validate = require("../middlewares/validate");
 const {registerSchema, loginSchema, verifyOtpSchema} = require("../validation/auth.validation");
 
 
-router.post("/register", validate(registerSchema), register);
-router.post("/login", validate(loginSchema), login);
+router.post("/auth/register", validate(registerSchema), register);
+router.post("/auth/login", validate(loginSchema), login);
 router.post("/verify-otp", validate(verifyOtpSchema), verifyOtp);
 
 
