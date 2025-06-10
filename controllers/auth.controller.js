@@ -1,9 +1,9 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const User = require("../models/user.model");
-const { generateOTP, otpExpiry, verifyOTP } = require("../utils/otpHelper");
-const sendEmail = require("../services/emailSender");
-const { registerSchema, verifyOtpSchema, loginSchema } = require("../validations/auth.validation");
+const User = require("../models/users.model");
+const { generateOTP, otpExpiry, verifyOTP } = require("../utils/otpHelpers");
+const sendEmail = require("../services/emailService");
+const { registerSchema, loginSchema, verifyOtpSchema } = require("../validation/auth.validation");
 
 // Register new user
 const register = async (req, res) => {
