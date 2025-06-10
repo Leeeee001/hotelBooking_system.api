@@ -4,7 +4,7 @@ node_modules/
 # Environment Variables file
 .env
 
+# some file i have but dont need to commit
 /xyz.tldr
-
 /drawSQL.png
 

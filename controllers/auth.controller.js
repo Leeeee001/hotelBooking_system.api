@@ -1,101 +1,128 @@
-const User = require("../models/users.model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const User = require("../models/user.model");
+const { generateOTP, otpExpiry, verifyOTP } = require("../utils/otpHelper");
+const sendEmail = require("../services/emailSender");
+const { registerSchema, verifyOtpSchema, loginSchema } = require("../validations/auth.validation");
 
-const authController = {
-  //register user by credentials...
-  register: async (req, res) => {
-    try {
-      const { name, email, phone_num, hash_password, role } = req.body;
-  
-      // Check if user already exists
-      const existingUser = await User.findOne({
-        $or: [{ email }, { phone_num }],
-      });
-  
-      if (existingUser) {
-        return res
-          .status(400)
-          .json({ message: "user already exists" });
-      }
-  
-      // Hash the password
-      const salt = await bcrypt.genSalt(10);
-      const hashedPassword = await bcrypt.hash(hash_password, salt);
-  
-      // Create new user
-      const newUser = new User({
-        name,
-        email,
-        phone_num,
-        hash_password: hashedPassword,
-        role,
-        is_Verified: true, 
-      });
-  
-      const data = await newUser.save();
-      console.log(data);
-  
-      return res.status(201).json({ message: "User registered successfully" });
-    } catch (error) {
-      return res.status(500).json({ status: 500, error: error.message });
+// Register new user
+const register = async (req, res) => {
+  try {
+    const parsed = registerSchema.safeParse(req.body);
+    if (!parsed.success) {
+      return res.status(400).json({ error: parsed.error.errors });
     }
-  },
-  //login user by credentials...
-  login: async (req, res) => {
-    try {
-      const { email, phone_num, password } = req.body;
 
-      // Find user by email or phone number
-      const existingUser = await User.findOne({
-        $or: [{ email }, { phone_num }],
-      });
+    const { name, email, phone_num, hash_password, role } = parsed.data;
 
-      if (!existingUser) {
-        return res.status(404).json({
-          status: 404,
-          error: "User not found with provided email or phone number",
-        });
-      }
-
-      // compare passwords
-      const isPasswordValid = await bcrypt.compare(
-        password,
-        existingUser.hash_password
-      );
-      if (!isPasswordValid) {
-        return res.status(401).json({
-          status: 401,
-          error: "Invalid password",
-        });
-      }
-
-      // Generate JWT token
-      const token = jwt.sign(
-        {
-          userId: existingUser._id,
-          role: existingUser.role,
-        },
-        process.env.JWT_SECRET || "yourSecretKey",
-        { expiresIn: "24h" }
-      );
-
-      return res.status(200).json({
-        status: 200,
-        message: "Login successful",
-        data: {
-          token,
-          user: {
-            name: existingUser.name,
-            email: existingUser.email,
-            role: existingUser.role,
-          },
-        },
-      });
-    } catch (error) {
-      return res.status(500).json({ status: 500, error: error.message });
+    const existingUser = await User.findOne({
+      $or: [{ email }, { phone_num }],
+    });
+    if (existingUser) {
+      return res.status(400).json({ error: "User already exists" });
     }
-  },
+
+    const otp = generateOTP();
+    const otp_expiry = otpExpiry();
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(hash_password, salt);
+
+    const user = new User({
+      name,
+      email,
+      phone_num,
+      hash_password: hashedPassword,
+      role,
+      otp: { code: otp, expiry: otp_expiry },
+    });
+
+    await user.save();
+
+    await sendEmail({
+      to: email,
+      subject: "OTP Verification - Hotel Booking",
+      template: "otpMail",
+      context: { otp },
+    });
+
+    return res.status(201).json({ message: "Registration successful, check your email for OTP" });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
 };
 
-module.exports = authController;
+// Verify OTP
+const verifyOtp = async (req, res) => {
+  try {
+    const parsed = verifyOtpSchema.safeParse(req.body);
+    if (!parsed.success) {
+      return res.status(400).json({ error: parsed.error.errors });
+    }
+
+    const { email, otp } = parsed.data;
+
+    const user = await User.findOne({ email });
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    const storedOtp = user.otp.code;
+    const expiryTime = new Date(user.otp.expiry).getTime();
+
+    const isValid = verifyOTP(otp, storedOtp, expiryTime);
+    if (!isValid) return res.status(400).json({ error: "Invalid or expired OTP" });
+
+    user.is_verified = true;
+    user.otp = { code: null, expiry: null };
+    await user.save();
+
+    return res.status(200).json({ message: "OTP verified successfully" });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+// Login
+const login = async (req, res) => {
+  try {
+    const parsed = loginSchema.safeParse(req.body);
+    if (!parsed.success) {
+      return res.status(400).json({ error: parsed.error.errors });
+    }
+
+    const { email, phone_num, hash_password } = parsed.data;
+
+    const user = await User.findOne({
+      $or: [{ email }, { phone_num }],
+    });
+
+    if (!user) return res.status(404).json({ error: "User not found" });
+    if (!user.is_verified) return res.status(401).json({ error: "User not verified" });
+    if (!user.is_active) return res.status(403).json({ error: "User is inactive" });
+    if (user.is_deleted) return res.status(410).json({ error: "User is deleted" });
+
+    const isMatch = await bcrypt.compare(hash_password, user.hash_password);
+    if (!isMatch) return res.status(401).json({ error: "Invalid password" });
+
+    const token = jwt.sign(
+      { userId: user._id, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: process.env.TOKEN_EXPIRY || "24h" }
+    );
+
+    return res.status(200).json({
+      message: "Login successful",
+      token,
+      user: {
+        name: user.name,
+        email: user.email,
+        phone_num: user.phone_num,
+        role: user.role,
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+
+module.exports = {register, login, verifyOtp};

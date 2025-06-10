@@ -6,12 +6,12 @@ let userSchema = mongoose.Schema({
     phone_num: {type: Number, required: true, unique: true, trim: true},
     hash_password: {type: String, trim: true, required: true},
     role: {type: String, enum: ["user", "admin"], default: "user", required: true},
-    otp: { type: String },
-    otp_expiry: { type: Date },
-    is_active: {type: Boolean, default: true},
-    is_deleted: {type: Boolean, default: false},
+    otp: {code: String, expiry: Date},
     is_verified: {type: Boolean, default: false},
+    is_active: {type: Boolean, default: true},
+    is_deleted: {type: Boolean, default: false}
 }, { timestamps: true })
+
 
 let User = mongoose.model("User", userSchema)
 module.exports = User;
