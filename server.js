@@ -14,8 +14,8 @@ app.get("/", (req, res) => {
   res.send(`<h2>🚀 server is running....</h2>`);
 });
 
-app.use("/api/auth", authRoute);
-app.use("/api/user", userRoute);
+app.use("/auth", authRoute);
+app.use("/user", userRoute);
 
 // server port listening....
 app.listen(port, () => {
