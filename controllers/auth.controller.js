@@ -39,6 +39,7 @@ const register = async (req, res) => {
 
     await user.save();
 
+    // Sending email after ragistration
     await sendEmail({
       to: email,
       subject: "OTP Verification - Hotel Booking",
@@ -100,9 +101,11 @@ const login = async (req, res) => {
     if (!user.is_active) return res.status(403).json({ error: "User is inactive" });
     if (user.is_deleted) return res.status(410).json({ error: "User is deleted" });
 
+    // Compare password
     const isMatch = await bcrypt.compare(hash_password, user.hash_password);
     if (!isMatch) return res.status(401).json({ error: "Invalid password" });
 
+    // Generate JWT token
     const token = jwt.sign(
       { userId: user._id, role: user.role },
       process.env.JWT_SECRET,

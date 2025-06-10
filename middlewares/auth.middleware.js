@@ -1,18 +1,31 @@
 const jwt = require("jsonwebtoken");
-const JWT_SECRET = process.env.SECRET || "yourSecretKey";
+const User = require("../models/user.model");
 
-const authenticate = (req, res, next) => {
-  const token = req.header("Authorization")?.split(" ")[1];
-
-  if (!token) return res.status(401).json({ message: "No token provided" });
-
+const authenticate = async (req, res, next) => {
   try {
-    const decoded = jwt.verify(token, JWT_SECRET);
-    req.user = decoded;
+    const token = req.headers.authorization?.split(" ")[1];
+    if (!token) return res.status(401).json({ error: "No token provided" });
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await User.findById(decoded.userId);
+
+    if (!user || !user.is_active || user.is_deleted)
+      return res.status(401).json({ error: "Unauthorized or inactive user" });
+
+    req.user = user;
     next();
-  } catch (error) {
-    res.status(403).json({ message: "Invalid or expired token" });
+  } catch (err) {
+    return res.status(401).json({ error: "Invalid or expired token" });
   }
 };
 
-module.exports = authenticate;
+const authorizeRoles = (...roles) => {
+  return (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+      return res.status(403).json({ error: "Forbidden: Insufficient permissions" });
+    }
+    next();
+  };
+};
+
+module.exports = { authenticate, authorizeRoles };

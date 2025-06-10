@@ -8,11 +8,11 @@ dbConnect(); // database connection....
 const port = process.env.PORT || 5000;
 
 
-// app.get("/", (req, res) => {
-//   res.send(`<h2>server is running....</h2>`);
-// });
+app.get("/", (req, res) => {
+  res.send(`<h2>server is running....</h2>`);
+});
 
-
+app.use();
 
 // server port listening....
 app.listen(port, () => {
