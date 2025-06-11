@@ -1,13 +1,11 @@
-const validate = (schema) => (req, res, next) => {          // validate the request body against the auth validation
-    try {
-        req.body = schema.parse(req.body)
-        next()
-    } catch (err) {
-        return res.status(400).json({
-            status: 400,
-            error: err.message || "Not Validate"
-        })
+const validate = (schema) => (req, res, next) => {
+    const parsed = schema.safeParse(req.body);
+    if (!parsed.success) {
+        console.log("Validation Error:", parsed.error.errors); 
+        return res.status(400).json({ error: parsed.error.errors });
     }
+    req.body = parsed.data;
+    next();
 };
 
 module.exports = validate;

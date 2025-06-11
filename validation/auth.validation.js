@@ -18,7 +18,8 @@ const loginSchema = z.object({
 
 // OTP verification validation
 const verifyOtpSchema = z.object({
-  email: z.string().email(),
+  email: z.string().email().optional(),
+  // phone_num: z.string().optional(),
   otp: z.string().length(6, "OTP must be 6 digits"),
 });
 

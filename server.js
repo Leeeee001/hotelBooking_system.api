@@ -14,6 +14,8 @@ app.get("/", (req, res) => {
   res.send(`<h2>🚀 server is running....</h2>`);
 });
 
+app.use(express.json());
+
 app.use("/auth", authRoute);
 app.use("/user", userRoute);
 

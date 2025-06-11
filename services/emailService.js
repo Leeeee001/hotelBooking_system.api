@@ -25,13 +25,13 @@ transporter.use("compile", hbs({
     extName: ".hbs"
 }));
 
-const sendEmail = async ({ option }) => {
+const sendEmail = async ({ to, subject, template, context }) => {
     await transporter.sendMail({
         from: process.env.EMAIL_USER,
-        to: option.to,
-        subject: option.subject,
-        template: option.template,
-        context: option.context
+        to,
+        subject,
+        template,
+        context
     });
 };
 
