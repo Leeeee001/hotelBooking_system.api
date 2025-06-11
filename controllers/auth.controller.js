@@ -9,9 +9,6 @@ const { registerSchema, loginSchema, verifyOtpSchema } = require("../validation/
 const register = async (req, res) => {
   try {
     const parsed = registerSchema.safeParse(req.body);
-    if (!parsed.success) {
-      return res.status(400).json({ error: parsed.error.errors[0].message });
-    }
 
     const { name, email, phone_num, hash_password, role } = parsed.data;
 
@@ -37,9 +34,11 @@ const register = async (req, res) => {
       otp: { code: otp, expiry: otp_expiry },
     });
 
+    // console.log(user)
+
     await user.save();
 
-    // Sending email after ragistration
+    // Sending OTP for verify ragistration
     await sendEmail({
       to: email,
       subject: "OTP Verification - Hotel Booking",
@@ -57,9 +56,6 @@ const register = async (req, res) => {
 const verifyOtp = async (req, res) => {
   try {
     const parsed = verifyOtpSchema.safeParse(req.body);
-    if (!parsed.success) {
-      return res.status(400).json({ error: parsed.error.errors[0].message });
-    }
 
     const { email, otp } = parsed.data;
 
@@ -76,7 +72,19 @@ const verifyOtp = async (req, res) => {
     user.otp = { code: null, expiry: null };
     await user.save();
 
-    return res.status(200).json({ message: "OTP verified successfully" });
+    // Sending welcome email after verify ragistration
+    const name = user.name.split(" ")[0];
+    // console.log(name)
+    const bookingLink = "http://localhost:3000/booking";
+
+    await sendEmail({
+      to: email,
+      subject: "🎉 Welcome to Luxury Hotels!",
+      template: "welcomeMail",
+      context: { name, bookingLink }
+    });
+
+    return res.status(200).json({ message: `OTP verified successfully, Welcome ${name}` });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
@@ -84,16 +92,13 @@ const verifyOtp = async (req, res) => {
 
 // Resend OTP
 const resendOtp = async (req, res) => {
-  
+
 }
 
 // Login
 const login = async (req, res) => {
   try {
     const parsed = loginSchema.safeParse(req.body);
-    if (!parsed.success) {
-      return res.status(400).json({ error: parsed.error.errors[0].message });
-    }
 
     const { email, phone_num, hash_password } = parsed.data;
 
@@ -133,5 +138,5 @@ const login = async (req, res) => {
   }
 };
 
+module.exports = { register, login, verifyOtp };
 
-module.exports = {register, login, verifyOtp};

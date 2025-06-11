@@ -5,7 +5,6 @@ const dbConnect = require("./config/db");
 const authRoute = require("./routes/auth.route")
 const userRoute = require("./routes/user.route")
 
-app.use(express.json());
 
 const app = express();
 dbConnect(); // database connection....
@@ -15,6 +14,8 @@ app.get("/", (req, res) => {
   res.send(`<h2>🚀 server is running....</h2>`);
 });
 
+app.use(express.json());
+
 
 app.use("/auth", authRoute);
 app.use("/user", userRoute);
@@ -23,9 +24,6 @@ app.use("/user", userRoute);
 app.listen(port, () => {
   console.log(`🚀 Server listening on localhost:${port}`);
 });
-
-
-
 
 
 
