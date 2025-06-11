@@ -6,13 +6,18 @@ const authenticate = async (req, res, next) => {
     const token = req.headers.authorization?.split(" ")[1];
     if (!token) return res.status(401).json({ error: "No token provided" });
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.SECRET);
     const user = await User.findById(decoded.userId);
+
+    // console.log("Decoded:", decoded);
 
     if (!user || !user.is_active || user.is_deleted)
       return res.status(401).json({ error: "Unauthorized or inactive user" });
 
     req.user = user;
+
+    // console.log("User:", user);
+
     next();
   } catch (err) {
     return res.status(401).json({ error: "Invalid or expired token" });

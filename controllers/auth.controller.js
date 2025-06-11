@@ -10,7 +10,7 @@ const register = async (req, res) => {
   try {
     const parsed = registerSchema.safeParse(req.body);
     if (!parsed.success) {
-      return res.status(400).json({ error: parsed.error.errors });
+      return res.status(400).json({ error: parsed.error.errors[0].message });
     }
 
     const { name, email, phone_num, hash_password, role } = parsed.data;
@@ -58,7 +58,7 @@ const verifyOtp = async (req, res) => {
   try {
     const parsed = verifyOtpSchema.safeParse(req.body);
     if (!parsed.success) {
-      return res.status(400).json({ error: parsed.error.errors });
+      return res.status(400).json({ error: parsed.error.errors[0].message });
     }
 
     const { email, otp } = parsed.data;
@@ -82,12 +82,17 @@ const verifyOtp = async (req, res) => {
   }
 };
 
+// Resend OTP
+const resendOtp = async (req, res) => {
+  
+}
+
 // Login
 const login = async (req, res) => {
   try {
     const parsed = loginSchema.safeParse(req.body);
     if (!parsed.success) {
-      return res.status(400).json({ error: parsed.error.errors });
+      return res.status(400).json({ error: parsed.error.errors[0].message });
     }
 
     const { email, phone_num, hash_password } = parsed.data;
@@ -111,6 +116,7 @@ const login = async (req, res) => {
       process.env.SECRET,
       { expiresIn: process.env.TOKEN_EXPIRY || "24h" }
     );
+    // console.log("Token:", token);
 
     return res.status(200).json({
       message: "Login successful",
