@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/users.model");
 const { generateOTP, otpExpiry, verifyOTP } = require("../utils/otpHelpers");
 const sendEmail = require("../services/emailService");
-const { registerSchema, loginSchema, verifyOtpSchema } = require("../validation/auth.validation");
+const { registerSchema, loginSchema, verifyOtpSchema, resendOtpSchema } = require("../validation/auth.validation");
 
 // Register new user
 const register = async (req, res) => {
@@ -75,7 +75,7 @@ const verifyOtp = async (req, res) => {
     // Sending welcome email after verify ragistration
     const name = user.name.split(" ")[0];
     // console.log(name)
-    const bookingLink = "http://localhost:3000/booking";
+    const bookingLink = "http://localhost:3000/";
 
     await sendEmail({
       to: email,
@@ -92,8 +92,43 @@ const verifyOtp = async (req, res) => {
 
 // Resend OTP
 const resendOtp = async (req, res) => {
+  try {
+    const parsed = resendOtpSchema.safeParse(req.body);
+    console.log(parsed);
 
-}
+    const { email, phone_num } = parsed.data;
+    const user = await User.findOne({ email });
+    console.log(user);
+
+    if (!user) return res.status(404).json({ error: "User not found" });
+    if (user.is_verified) return res.status(400).json({ error: "User is already verified" });
+
+    const now = Date.now();
+    const expiryTime = new Date(user.otp.expiry).getTime();
+
+    const isExpired = expiryTime < now;
+    if (!isExpired) return res.status(400).json({ error: "OTP has not expired yet" });
+
+    const { otp, expiry } = generateOTP();
+    user.otp = { code: otp, expiry };
+    console.log(user.otp);
+    
+
+    await user.save();
+
+    await sendEmail({
+      to: user.email,
+      subject: "OTP Verification - Hotel Booking",
+      template: "otpMail",
+      context: { otp },
+    });
+
+    return res.status(200).json({ message: "OTP resend sucessfully" });
+
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
 
 // Login
 const login = async (req, res) => {
@@ -138,5 +173,5 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { register, login, verifyOtp };
+module.exports = { register, login, verifyOtp, resendOtp };
 

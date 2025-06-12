@@ -18,10 +18,18 @@ const loginSchema = z.object({
 
 // OTP verification validation
 const verifyOtpSchema = z.object({
-  email: z.string().email().optional(),
-  // phone_num: z.string().optional(),
-  otp: z.string().length(6, "OTP must be 6 digits"),
+  email: z.string().email().regex(/^[a-zA-Z0-9. _%+-]+@[a-zA-Z0-9. -]+\.[a-zA-Z]{2,}$/, "Invalid email").optional(),
+  phone_num: z.string().regex(/^\d{10}$/).optional(),
+  otp: z.string().length(6, "OTP must be 6 digits")
+});
+
+// Resend OTP validation
+const resendOtpSchema = z.object({
+  email: z.string().email("Invalid email").regex(/^[a-zA-Z0-9. _%+-]+@[a-zA-Z0-9. -]+\.[a-zA-Z]{2,}$/, "Invalid email").optional(),
+  phone_num: z.string().regex(/^\d{10}$/, "Phone must be 10 digits").optional(),
+}).refine((data) => data.email || data.phone_num, {
+  message: "Email or Phone Number is required"
 });
 
 
-module.exports = { registerSchema, loginSchema, verifyOtpSchema };
+module.exports = { registerSchema, loginSchema, verifyOtpSchema, resendOtpSchema };
