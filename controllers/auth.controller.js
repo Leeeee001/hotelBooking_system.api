@@ -39,12 +39,12 @@ const register = async (req, res) => {
     await user.save();
     // Sending OTP for verify ragistration
     const purpose = "account varification";
-    const otpExpiry = process.env.OTP_EXPIRY_MINUTES
+    const otpExp = process.env.OTP_EXPIRY_MINUTES
     await sendEmail({
       to: email,
       subject: "OTP Verification - Hotel Booking",
       template: "otpMail",
-      context: { otp, purpose, otpExpiry },
+      context: { otp, purpose, otpExp },
     });
 
     return res.status(201).json({ message: "Registration successful, check your email for OTP" });
@@ -173,7 +173,7 @@ const login = async (req, res) => {
   }
 };
 
-// forgotPassword 
+// forget-Password 
 const forgotPassword = async (req, res) => {
   try {
     const parsed = forgotPasswordSchema.safeParse(req.body);
@@ -208,7 +208,7 @@ const forgotPassword = async (req, res) => {
   }
 };
 
-// Reset-pasword
+// Reset-password
 const resetPassword = async (req, res) => {
   try {
     const parsed = resetPasswordSchema.safeParse(req.body);
