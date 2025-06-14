@@ -5,7 +5,7 @@ const validate = (schema) => (req, res, next) => {   // check auth validation sc
         return res.status(400).json({ error: parsed.error.errors });
     }
     req.body = parsed.data;
-    // console.log(parsed.data);
+    console.log(parsed.data);
     next();
 };
 
