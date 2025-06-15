@@ -97,7 +97,7 @@ const resendOtp = async (req, res) => {
     const parsed = resendOtpSchema.safeParse(req.body);
     const { email, phone_num } = parsed.body;
 
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ $or: [{ email }, { phone_num }] });
     if (!user) return res.status(404).json({ error: "User not found" });
     if (user.is_verified) return res.status(400).json({ error: "User is already verified" });
 
