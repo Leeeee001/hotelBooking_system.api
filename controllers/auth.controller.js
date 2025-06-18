@@ -112,6 +112,7 @@ const resendOtp = async (req, res) => {
     const newExpiry = otpExpiry(); 
 
     user.otp = { code: newOtp, expiry: newExpiry };
+    
     await user.save();
 
     // Send email with new OTP

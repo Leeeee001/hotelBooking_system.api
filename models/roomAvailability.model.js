@@ -2,7 +2,7 @@ let mongoose = require("mongoose");
 
 let roomAvailableSchema = mongoose.Schema({
   room_id: {type: mongoose.Schema.Types.ObjectId, ref: "Room"},
-  date: {type: date.now()},
+  date: {type: Date, required: true},
   is_Booked: {type: Boolean},
 }, { timestamps: true });
 

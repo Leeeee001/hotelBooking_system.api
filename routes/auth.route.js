@@ -9,10 +9,9 @@ const {registerSchema, loginSchema, verifyOtpSchema, resendOtpSchema, forgotPass
 router.get("/google", (req, res, next) => {
   const role = req.query.role || "user";
   const state = Buffer.from(JSON.stringify({ role })).toString("base64");
-
   passport.authenticate("google", {
     scope: ["profile", "email"],
-    state, // pass custom role via state
+    state,                       // pass custom role via state
   })(req, res, next);
 });
 
@@ -38,7 +37,13 @@ router.get("/google/callback",
 // Custom Credential register-login routes  
 router.post("/register", validate(registerSchema), register);
 router.post("/verify-otp", validate(verifyOtpSchema), verifyOtp);
-router.post("/resendOtp", /*(req, res) => {console.log("BODY RECEIVED:", req.body); res.json({ received: req.body })},*/ validate(resendOtpSchema), resendOtp)
+
+// not fixed yet to test
+router.post("/resendOtp", (req, res) => {
+  console.log("BODY RECEIVED:", req.body);
+  res.json({ received: "tanmoy" })
+}, /*validate(resendOtpSchema), resendOtp*/);
+
 router.post("/login", validate(loginSchema), login);
 router.post("/forgot-password", validate(forgotPasswordSchema), forgotPassword);
 router.post("/reset-password", validate(resetPasswordSchema), resetPassword);

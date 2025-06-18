@@ -6,7 +6,14 @@ const authRoute = require("./routes/auth.route")
 const userRoute = require("./routes/user.route")
 const passport = require("./config/passport"); // your passport config
 const app = express();
+
+
+// Body parser middleware to parse incoming request bodies
 app.use(express.json());
+
+const bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded())
+app.use(bodyParser.json())
 
 
 dbConnect(); // database connection....

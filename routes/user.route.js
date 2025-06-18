@@ -1,13 +1,15 @@
-let express = require('express')
-let router = express.Router()
+const express = require("express");
+const router = express.Router();
 
-const { authenticate } = require('../middlewares/auth.middleware');
+const { authenticate, authorizeRoles } = require("../middlewares/auth.middleware");
+const { getProfile, updateProfile, getAvailableRooms, getRoomDetails } = require("../controllers/user.controller");
 
 
-router.get("/:id", authenticate, (req, res) => {
-  const { name, email, phone_num, role, provider } = req.user;
-  res.status(200).json({ name, email, phone_num, role, provider });
-});
+
+router.get("/profile", authenticate, authorizeRoles("user"), getProfile);
+router.put("/profile", authenticate, authorizeRoles("user"), updateProfile);
+router.get("/get-rooms", authenticate, authorizeRoles("user"), getAvailableRooms);
+router.get("/room/:room_id", authenticate, authorizeRoles("user"), getRoomDetails);
 
 
 module.exports = router;

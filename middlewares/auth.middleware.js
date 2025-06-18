@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/users.model");
 
+// Authenticate: Verify JWT token and attach user to request
 const authenticate = async (req, res, next) => {
   try {
     const token = req.headers.authorization?.split(" ")[1];
@@ -24,6 +25,7 @@ const authenticate = async (req, res, next) => {
   }
 };
 
+// Authorize: Restrict route access by role
 const authorizeRoles = (...roles) => {
   return (req, res, next) => {
     if (!roles.includes(req.user.role)) {
@@ -33,4 +35,6 @@ const authorizeRoles = (...roles) => {
   };
 };
 
+
 module.exports = { authenticate, authorizeRoles };
+
