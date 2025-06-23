@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const passport = require("passport");
-const {register, login, verifyOtp, resendOtp, forgotPassword, resetPassword} = require("../controllers/auth.controller");
+const {register, login, verifyOtp, resendOtp, forgotPassword, resetPassword, logout} = require("../controllers/auth.controller");
 const validate = require("../middlewares/validate");
 const {registerSchema, loginSchema, verifyOtpSchema, resendOtpSchema, forgotPasswordSchema, resetPasswordSchema} = require("../validation/auth.validation");
 
@@ -47,6 +47,7 @@ router.post("/resendOtp", (req, res) => {
 router.post("/login", validate(loginSchema), login);
 router.post("/forgot-password", validate(forgotPasswordSchema), forgotPassword);
 router.post("/reset-password", validate(resetPasswordSchema), resetPassword);
+router.post("/logout", logout);
 
 
 

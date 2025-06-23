@@ -2,8 +2,10 @@
 require("dotenv").config(); // for environment variables
 const express = require("express");
 const dbConnect = require("./config/db");
-const authRoute = require("./routes/auth.route")
-const userRoute = require("./routes/user.route")
+const authRoute = require("./routes/auth.route");
+const userRoute = require("./routes/user.route");
+// const adminRoute = require("./routes/admin.route");
+
 const passport = require("./config/passport"); // your passport config
 const app = express();
 
@@ -27,6 +29,7 @@ app.get("/", (req, res) => {
 app.use(passport.initialize());
 app.use("/auth", authRoute);
 app.use("/user", userRoute);
+// app.use("/admin", adminRoute);
 
 
 
