@@ -1,23 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const {
-  addHotel,
-  addRoom,
-  setAvailability,
-  getAllBookings,
-  updateHotel,
-  updateRoom,
-  deleteHotel,
-  deleteRoom,
-} = require("../controllers/admin.controller");
-const { authenticate } = require("../middlewares/authenticate");
-const { authorizeRoles } = require("../middlewares/authorizeRoles");
+const { addHotel, addRoom, setAvailability, getAllBookings, updateHotel, updateRoom, deleteHotel, deleteRoom } = require("../controllers/admin.controller");
+const { authenticate, authorizeRoles } = require("../middlewares/auth.middleware");
 const validate = require("../middlewares/validate");
-const {
-  addHotelSchema,
-  addRoomSchema,
-  setAvailabilitySchema,
-} = require("../validation/admin.validation");
+const { addHotelSchema, addRoomSchema, setAvailabilitySchema } = require("../validation/admin.validation");
 
 // authorize for admin
 const adminOnly = [authenticate, authorizeRoles("admin")];

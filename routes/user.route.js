@@ -8,14 +8,14 @@ const { getProfile, updateProfile, getAvailableRooms, getRoomDetails, bookRoom, 
 const userAccess = [authenticate, authorizeRoles("user")];
 
 
-router.get("/profile", userAccess, getProfile);
-router.put("/edit-profile", userAccess, validate(updateProfileSchema), updateProfile);
+router.get("/profile", authenticate, getProfile);
+router.put("/edit-profile", authenticate, validate(updateProfileSchema), updateProfile);
 router.get("/get-rooms", userAccess, getAvailableRooms);
 router.get("/room/:room_id", userAccess, getRoomDetails);
 router.post("/book-room", userAccess, validate(bookRoomSchema), bookRoom);
 router.get("/bookings", userAccess, getMyBookings);
 router.put("/cancel-booking/:bookingId", userAccess, cancelBooking);
-router.delete("/delete-account", userAccess, deleteAccount);
+router.delete("/delete-account", authenticate, deleteAccount);
 
 
 

@@ -2,9 +2,9 @@ const Hotel = require("../models/hotel.model");
 const Room = require("../models/room.model");
 const RoomAvailability = require("../models/roomAvailability.model");
 const Booking = require("../models/booking.model");
-const User = require("../models/user.model"); // for user details in booking summary
+const User = require("../models/user.model"); 
 
-// ✅ 1. Add a new Hotel
+// Add a new Hotel
 const addHotel = async (req, res) => {
   try {
     const { name, location, description } = req.body;
@@ -27,7 +27,7 @@ const addHotel = async (req, res) => {
   }
 };
 
-// ✅ 2. Add a Room under a Hotel
+// Add a Room under a Hotel
 const addRoom = async (req, res) => {
   try {
     const { hotelId, name, price, capacity, features } = req.body;
@@ -51,7 +51,7 @@ const addRoom = async (req, res) => {
   }
 };
 
-// ✅ 3. Set Room Availability (like calendar slots)
+// Set Room Availability (like calendar slots)
 const setAvailability = async (req, res) => {
   try {
     const { roomId, startDate, endDate, isAvailable } = req.body;
@@ -74,7 +74,7 @@ const setAvailability = async (req, res) => {
   }
 };
 
-// ✅ 4. View All Bookings for Hotels created by the Admin
+// View All Bookings for Hotels created by the Admin
 const getAllBookings = async (req, res) => {
   try {
     const adminId = req.user._id;
@@ -102,7 +102,7 @@ const getAllBookings = async (req, res) => {
   }
 };
 
-// ✅ 5. Update Hotel Details
+// Update Hotel Details
 const updateHotel = async (req, res) => {
   try {
     const hotelId = req.params.id;
@@ -127,7 +127,7 @@ const updateHotel = async (req, res) => {
   }
 };
 
-// ✅ 6. Update Room Details
+// Update Room Details
 const updateRoom = async (req, res) => {
   try {
     const roomId = req.params.id;
@@ -151,7 +151,7 @@ const updateRoom = async (req, res) => {
   }
 };
 
-// ✅ 7. Delete Hotel
+// Delete Hotel
 const deleteHotel = async (req, res) => {
   try {
     const hotelId = req.params.id;
@@ -172,7 +172,7 @@ const deleteHotel = async (req, res) => {
   }
 };
 
-// ✅ 8. Delete Room
+// Delete Room
 const deleteRoom = async (req, res) => {
   try {
     const roomId = req.params.id;
@@ -189,13 +189,7 @@ const deleteRoom = async (req, res) => {
   }
 };
 
-module.exports = {
-  addHotel,
-  addRoom,
-  setAvailability,
-  getAllBookings,
-  updateHotel,
-  updateRoom,
-  deleteHotel,
-  deleteRoom,
-};
+
+
+module.exports = { addHotel, addRoom, setAvailability, getAllBookings, updateHotel, updateRoom, deleteHotel, deleteRoom };
+
