@@ -8,17 +8,7 @@ const updateProfileSchema = z.object({
     .string()
     .regex(/^[0-9]{10}$/, "Phone number must be 10 digits")
     .optional(),
-});
+}).strict();   // for allows only specified fields
 
-// Book Room Schema
-const bookRoomSchema = z.object({
-  roomId: z.string().min(1, "Room ID is required"),
-  checkInDate: z.string().min(1, "Check-in date is required"),
-  checkOutDate: z.string().min(1, "Check-out date is required"),
-  guests: z
-    .number()
-    .int("Guests must be an integer")
-    .positive("Guests must be at least 1"),
-});
 
-module.exports = { updateProfileSchema, bookRoomSchema };
+module.exports = { updateProfileSchema };

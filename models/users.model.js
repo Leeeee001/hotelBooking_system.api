@@ -2,7 +2,7 @@ let mongoose = require("mongoose")
 
 let userSchema = mongoose.Schema({
     name: {type: String, required: true},
-    email: {type: String, required: true, unique: true, trim: true, lowercase: true},
+    email: {type: String, required: true, trim: true, lowercase: true},
     phone_num: {type: String, unique: true, trim: true},
     hash_password: {type: String, trim: true},
     role: {type: String, enum: ["user", "admin"], required: true},
