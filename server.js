@@ -10,21 +10,19 @@ const bookingRoute = require("./routes/booking.route");
 const passport = require("./config/passport"); 
 const app = express();
 
-
 // Body parser middleware to parse incoming request bodies
 app.use(express.json());
 
-const bodyParser = require('body-parser');
-app.use(bodyParser.urlencoded())
-app.use(bodyParser.json())
-
+const bodyParser = require("body-parser");
+app.use(bodyParser.urlencoded());
+app.use(bodyParser.json());
 
 dbConnect(); // database connection....
 const port = process.env.PORT || 5000;
 
 // Default Route
 app.get("/", (req, res) => {
-  res.send(`<h2>🚀 server is running....</h2>`);
+  res.send("<h2>🚀 server is running....</h2>");
 });
 
 
@@ -39,12 +37,12 @@ app.use("/booking", bookingRoute);
 
 
 // 404 Handler
-app.use((req, res, next) => {
+app.use((req, res) => {
   res.status(404).json({ error: "Route not found" });
 });
 
 // Global Error Handler
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
   console.error(err.stack);
   res.status(500).json({ error: "Internal Server Error" });
 });

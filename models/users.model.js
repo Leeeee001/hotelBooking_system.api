@@ -1,4 +1,4 @@
-let mongoose = require("mongoose")
+let mongoose = require("mongoose");
 
 let userSchema = mongoose.Schema({
     name: {type: String, required: true},
@@ -12,8 +12,8 @@ let userSchema = mongoose.Schema({
     is_verified: {type: Boolean, default: false},
     is_active: {type: Boolean, default: true},
     is_deleted: {type: Boolean, default: false}
-}, { timestamps: true })
+}, { timestamps: true });
 
 
-let User = mongoose.model("User", userSchema)
+let User = mongoose.model("User", userSchema);
 module.exports = User;

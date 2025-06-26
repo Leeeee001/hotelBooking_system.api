@@ -39,7 +39,7 @@ const register = async (req, res) => {
     await user.save();
     // Sending OTP for verify ragistration
     const purpose = "account varification";
-    const otpExp = process.env.OTP_EXPIRY_MINUTES
+    const otpExp = process.env.OTP_EXPIRY_MINUTES;
     await sendEmail({
       to: email,
       subject: "OTP Verification - Hotel Booking",
@@ -195,7 +195,7 @@ const forgotPassword = async (req, res) => {
 
     //sending otp for reset password
     const purpose = "reset your password";
-    const otpExpiry = process.env.OTP_EXPIRY_MINUTES
+    const otpExpiry = process.env.OTP_EXPIRY_MINUTES;
     await sendEmail({
       to: user.email,
       subject: "Reset-Password OTP",

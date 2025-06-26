@@ -107,11 +107,11 @@ const bookRoom = async (req, res) => {
 
     //sending confirm booking room email
     await sendEmail({
-      to: email,
+      to: User.email,
       subject: "Booking Confirmation",
       template: "bookingConfirmMail",
       context: {
-        customerName: user.name,
+        customerName: User.name,
         bookingId: booking._id.toString(),
         checkInDate: booking.checkInDate.toDateString(),
         checkOutDate: booking.checkOutDate.toDateString(),
@@ -217,7 +217,7 @@ const cancelBooking = async (req, res) => {
         hotelName: room.hotelId.name,
         checkInDate: booking.checkInDate.toDateString(),
         checkOutDate: booking.checkOutDate.toDateString(),
-        supportLink: `http://localhost:3000/`,
+        supportLink: "http://localhost:3000/",
         currentYear: new Date().getFullYear(),
       },
     });

@@ -3,7 +3,7 @@ const hbs = require("nodemailer-express-handlebars").default;
 const path = require("path");
 
 const transporter = nodemailer.createTransport({    // transporter is a function that sends email
-    host: 'smtp.gmail.com',
+    host: "smtp.gmail.com",
     service: "gmail",
     port: 465,
     secure: true,
@@ -13,7 +13,7 @@ const transporter = nodemailer.createTransport({    // transporter is a function
     }
 });
 
-const viewPath = path.resolve(__dirname, "../views/emailTemplates")
+const viewPath = path.resolve(__dirname, "../views/emailTemplates");
 
 transporter.use("compile", hbs({
     viewEngine: {

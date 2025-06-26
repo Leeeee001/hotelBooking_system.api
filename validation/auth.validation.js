@@ -27,7 +27,7 @@ const verifyOtpSchema = z.object({
 const resendOtpSchema = z.object({
     email: z.string().email().regex(/^[a-zA-Z0-9. _%+-]+@[a-zA-Z0-9. -]+\.[a-zA-Z]{2,}$/, "Invalid email").optional(),
     phone_num: z.string().regex(/^\d{10}$/, "Phone must be 10 digits").optional(),
-  })
+  });
 
 // Forgot password validation
 const forgotPasswordSchema = z.object({

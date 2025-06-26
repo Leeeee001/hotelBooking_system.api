@@ -41,7 +41,7 @@ router.post("/verify-otp", validate(verifyOtpSchema), verifyOtp);
 // not fixed yet to test
 router.post("/resendOtp", (req, res) => {
   console.log("BODY RECEIVED:", req.body);
-  res.json({ received: "tanmoy" })
+  res.json({ received: "tanmoy" });
 }, /*validate(resendOtpSchema), resendOtp*/);
 
 router.post("/login", validate(loginSchema), login);

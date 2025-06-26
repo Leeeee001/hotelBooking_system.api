@@ -8,3 +8,6 @@ node_modules/
 /xyz.tldr
 /drawSQL.png
 
+# lint
+.eslintrc.js
+

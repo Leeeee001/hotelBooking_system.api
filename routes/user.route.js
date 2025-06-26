@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { updateProfileSchema } = require("../validation/user.validation")
+const { updateProfileSchema } = require("../validation/user.validation");
 const { authenticate } = require("../middlewares/auth.middleware");
 const validate = require("../middlewares/validate");
 const { getProfile, updateProfile, deleteAccount } = require("../controllers/user.controller");
