@@ -1,0 +1,1006 @@
+{
+	"info": {
+		"_postman_id": "33c8ee94-c5ac-4e39-a50f-b950e27cc40c",
+		"name": "Hotel-RoomBooking.API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "36748154"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"user2\",\r\n  \"email\": \"user2@gmail.com\",\r\n  \"phone_num\": \"6548956628\",\r\n  \"hash_password\": \"123456\",\r\n  \"role\": \"admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/auth/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 404\", function () {\r",
+									"    pm.expect(pm.response.code).to.eql(404);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response content type is text/html\", function () {\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql(\"text/html\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response body is empty\", function () {\r",
+									"    pm.expect(pm.response.text()).to.be.empty;\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response schema validation\", function () {\r",
+									"    const responseData = pm.response.text();\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.a('string').that.is.empty; // Expecting an empty string response\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"user2@gmail.com\",\r\n    \"hash_password\": \"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "verifyOtp",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"user2@gmail.com\",\r\n    \"otp\": \"826544\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/auth/verify-otp",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"auth",
+								"verify-otp"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "resendOtp",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 400\", function () {\r",
+									"    pm.expect(pm.response.code).to.eql(400);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response has an error array with required fields\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData.error).to.be.an('array').that.is.not.empty;\r",
+									"\r",
+									"    responseData.error.forEach(err => {\r",
+									"        pm.expect(err).to.have.all.keys('code', 'expected', 'received', 'path', 'message');\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Error code is a non-empty string\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData.error).to.be.an('array').that.is.not.empty;\r",
+									"    responseData.error.forEach(function(err) {\r",
+									"        pm.expect(err.code).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Error code should not be empty\");\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Error message is a non-empty string\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData.error).to.be.an('array').that.is.not.empty;\r",
+									"    \r",
+									"    responseData.error.forEach(function(err) {\r",
+									"        pm.expect(err.message).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Error message should not be empty\");\r",
+									"    });\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Conten-Type",
+								"value": "application/json;",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"tanmoychakraborty0041383@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/auth/resendOtp",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"auth",
+								"resendOtp"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "forgetPassword",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"tanmoychakraborty0041383@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/auth/forgot-password",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"auth",
+								"forgot-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "resetPassword",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"tanmoychakraborty0041383@gmail.com\",\r\n    \"otp\": \"868109\",\r\n    \"new_password\": \"456789\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/auth/reset-password",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"auth",
+								"reset-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "googleAuth",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/auth/google?role=customer",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"auth",
+								"google"
+							],
+							"query": [
+								{
+									"key": "role",
+									"value": "customer"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODVkNTU5NmMzNzVhZWY0YmE5ZmQxZGMiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NTExMzQ4OTMsImV4cCI6MTc1MTEzODQ5M30.PXakE0HSSDqryAtuxGUxcoqI9JT_2FKlhey2M_mEvgw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"user2@gmail.com\",\r\n    \"hash_password\": \"123456\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/auth/logout",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "booking",
+					"item": [
+						{
+							"name": "roomBooking",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODU4MjI0ZmRlZDNlZWQ1Yjc3NDQ4YTMiLCJyb2xlIjoidXNlciIsImlhdCI6MTc1MDY1NTc0OCwiZXhwIjoxNzUwNjU5MzQ4fQ.yCPKywjbGe2t5AGc-4saKguVPe4ewBf2BZC53s1weaM",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/user/book-room",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"user",
+										"book-room"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "allbookings",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODU4MjI0ZmRlZDNlZWQ1Yjc3NDQ4YTMiLCJyb2xlIjoidXNlciIsImlhdCI6MTc1MDY1NTc0OCwiZXhwIjoxNzUwNjU5MzQ4fQ.yCPKywjbGe2t5AGc-4saKguVPe4ewBf2BZC53s1weaM",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/user/bookings",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"user",
+										"bookings"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "cancel-booking",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODU4MjI0ZmRlZDNlZWQ1Yjc3NDQ4YTMiLCJyb2xlIjoidXNlciIsImlhdCI6MTc1MDY1NTc0OCwiZXhwIjoxNzUwNjU5MzQ4fQ.yCPKywjbGe2t5AGc-4saKguVPe4ewBf2BZC53s1weaM",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/user/cancel-booking/:booking_id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"user",
+										"cancel-booking",
+										":booking_id"
+									],
+									"variable": [
+										{
+											"key": "booking_id",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "payment",
+					"item": []
+				},
+				{
+					"name": "profile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODVkNTU5NmMzNzVhZWY0YmE5ZmQxZGMiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NTA5NTgwOTksImV4cCI6MTc1MDk2MTY5OX0.Gmi9bmV-Ux9DfsCAEV421KFkrrCics_Q0CG4fMHCNJ8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/user/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateUser",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODVkNTU5NmMzNzVhZWY0YmE5ZmQxZGMiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NTA5NDcyODIsImV4cCI6MTc1MDk1MDg4Mn0.91C32BQnk9BwPR4YI4Or4xDyM50fD9zE8u5y7sjpAjU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"user2@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/user/profile/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								"profile",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteUser",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODU4MjI0ZmRlZDNlZWQ1Yjc3NDQ4YTMiLCJyb2xlIjoidXNlciIsImlhdCI6MTc1MTEzMjgyOCwiZXhwIjoxNzUxMTM2NDI4fQ.d5UScy4dwD_DFS_FEsyLkfcnrnD7ymJODPhP0obiqHE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/user/profile/6858224fded3eed5b77448a3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								"profile",
+								"6858224fded3eed5b77448a3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "admin",
+			"item": [
+				{
+					"name": "hotels",
+					"item": [
+						{
+							"name": "rooms",
+							"item": [
+								{
+									"name": "addRooms",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODVkNTU5NmMzNzVhZWY0YmE5ZmQxZGMiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NTExMzA0MTQsImV4cCI6MTc1MTEzNDAxNH0.kljMpOckE-57S_nj8TK9QK3c-KJjIv6TWHQ-UfuA75g",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "hotel_id",
+													"value": "685f9870e2e5645a5111f7a6",
+													"type": "text"
+												},
+												{
+													"key": "room_Type",
+													"value": "Studio Suite",
+													"type": "text"
+												},
+												{
+													"key": "description",
+													"value": "Elegant suite with mini kitchen and sofa lounge",
+													"type": "text"
+												},
+												{
+													"key": "price_Per_Night",
+													"value": "5200",
+													"type": "text"
+												},
+												{
+													"key": "capasity",
+													"value": "3",
+													"type": "text"
+												},
+												{
+													"key": "images",
+													"type": "file",
+													"src": []
+												},
+												{
+													"key": "isAvailable",
+													"value": "true",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://localhost:3000/room",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "3000",
+											"path": [
+												"room"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "deleteRooms",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODVkNTU5NmMzNzVhZWY0YmE5ZmQxZGMiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NTExMzYyNDksImV4cCI6MTc1MTEzOTg0OX0.UlVv6JjSfgPHR4hvwm4yR3Nc-0WhG9dj6zOGDs1mYmo",
+													"type": "string"
+												}
+											]
+										},
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:3000/room/685e668b5ef5cc70a28ce402",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "3000",
+											"path": [
+												"room",
+												"685e668b5ef5cc70a28ce402"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "updateRooms",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODVkNTU5NmMzNzVhZWY0YmE5ZmQxZGMiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NTExNDQxMDQsImV4cCI6MTc1MTE0NzcwNH0.0ohdMlxuihHhW2fnYtXy3CBzsJErypa6WjGJI6XG1PE",
+													"type": "string"
+												}
+											]
+										},
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "hotel_id",
+													"value": "685f9870e2e5645a5111f7a6",
+													"type": "text"
+												},
+												{
+													"key": "room_Type",
+													"value": "Studio Suite ",
+													"type": "text"
+												},
+												{
+													"key": "description",
+													"value": "Newly furnished room",
+													"type": "text"
+												},
+												{
+													"key": "price_Per_Night",
+													"value": "5150",
+													"type": "text"
+												},
+												{
+													"key": "capasity",
+													"value": "3",
+													"type": "text"
+												},
+												{
+													"key": "images",
+													"type": "file",
+													"src": []
+												},
+												{
+													"key": "isAvailable",
+													"value": "true",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://localhost:3000/room/685fa1ad20cfe2d9d8e6fa0d",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "3000",
+											"path": [
+												"room",
+												"685fa1ad20cfe2d9d8e6fa0d"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "available-rooms",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODVkNTU5NmMzNzVhZWY0YmE5ZmQxZGMiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NTExMzA0MTQsImV4cCI6MTc1MTEzNDAxNH0.kljMpOckE-57S_nj8TK9QK3c-KJjIv6TWHQ-UfuA75g",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:3000/room/available?checkInDate=2024-07-01&checkOutDate=2024-07-03",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "3000",
+											"path": [
+												"room",
+												"available"
+											],
+											"query": [
+												{
+													"key": "checkInDate",
+													"value": "2024-07-01"
+												},
+												{
+													"key": "checkOutDate",
+													"value": "2024-07-03"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "roomdetails",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODVkNTU5NmMzNzVhZWY0YmE5ZmQxZGMiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NTEwODk1MjksImV4cCI6MTc1MTA5MzEyOX0.iLlsBdnHT__XlUU-yf2_HBhjabSQUFLVdLdhjy_rx6E",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:3000/room/685e668b5ef5cc70a28ce402",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "3000",
+											"path": [
+												"room",
+												"685e668b5ef5cc70a28ce402"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "setroomavaliable",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODVkNTU5NmMzNzVhZWY0YmE5ZmQxZGMiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NTEwMDQwODksImV4cCI6MTc1MTAwNzY4OX0.-z7Nng4WHMfoGwWbOuQ-nGkNSV1exrSHHWb0BGGun8U",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"roomId\": \"685e25eff1c4c5210b001d7c\",\r\n  \"startDate\": \"2024-07-01\",\r\n  \"endDate\": \"2024-07-05\",\r\n  \"isAvailable\": true\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:3000/room/availability",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "3000",
+											"path": [
+												"room",
+												"availability"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "addHotels",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODVkNTU5NmMzNzVhZWY0YmE5ZmQxZGMiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NTExMDg2MjMsImV4cCI6MTc1MTExMjIyM30.m7tpq-xcUg7mbSBJJN18XgCrY47EO8lXdDfuaydgXnY",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"hotel_name\": \"Royal Grand\",\r\n    \"description\": \"5-star with luxury amenities\",\r\n    \"address\": \"Kolkata\",\r\n    \"pin\": \"700002\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/admin/hotel",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"admin",
+										"hotel"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deleteHotels",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODVkNTU5NmMzNzVhZWY0YmE5ZmQxZGMiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NTExMjU5MzEsImV4cCI6MTc1MTEyOTUzMX0.BHhNjG67eYW-wsP9bW6drJVtJofFM_Ns5HPakCpt4po",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/admin/hotel/685fcc22b77144dd60a4b108",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"admin",
+										"hotel",
+										"685fcc22b77144dd60a4b108"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updateHotels",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODVkNTU5NmMzNzVhZWY0YmE5ZmQxZGMiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NTExMjU5MzEsImV4cCI6MTc1MTEyOTUzMX0.BHhNjG67eYW-wsP9bW6drJVtJofFM_Ns5HPakCpt4po",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"hotel_name\": \"Royal Grand(updated)\",\r\n    \"description\": \"5-star with luxury amenities\",\r\n    \"address\": \"Kolkata, West Bengal\",\r\n    \"pin\": \"700002\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/admin/hotel/685fcc22b77144dd60a4b108",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"admin",
+										"hotel",
+										"685fcc22b77144dd60a4b108"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getAllHotels",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODVkNTU5NmMzNzVhZWY0YmE5ZmQxZGMiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NTExMzA0MTQsImV4cCI6MTc1MTEzNDAxNH0.kljMpOckE-57S_nj8TK9QK3c-KJjIv6TWHQ-UfuA75g",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/admin/getAllHotels",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"admin",
+										"getAllHotels"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}
