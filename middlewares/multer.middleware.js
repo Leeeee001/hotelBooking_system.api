@@ -1,10 +1,18 @@
 const multer = require("multer");
 const path = require("path");
+const fs = require("fs");
 
 // Storage config: Where to save images
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "uploads/rooms");    // Must exist or be auto-created
+    const dir = "uploads/rooms";
+
+    // Auto-create directory if it doesn't exist
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+
+    cb(null, dir); // Always returns existing folder now
   },
   filename: function (req, file, cb) {
     const uniqueSuffix = Date.now() + "_" + file.originalname;
@@ -28,8 +36,4 @@ const upload = multer({
   limits: { fileSize: 5 * 1024 * 1024 }, // Optional: limit to 5MB
 });
 
-
-
 module.exports = upload;
-
-

@@ -42,7 +42,7 @@ router.post("/verify-otp", validate(verifyOtpSchema), verifyOtp);
 router.post("/resendOtp", (req, res) => {
   console.log("BODY RECEIVED:", req.body);
   res.json({ received: "tanmoy" });
-}, /*validate(resendOtpSchema), resendOtp*/);
+}, validate(resendOtpSchema), resendOtp);
 
 router.post("/login", validate(loginSchema), login);
 router.post("/forgot-password", validate(forgotPasswordSchema), forgotPassword);

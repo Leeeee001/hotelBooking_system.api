@@ -1,32 +1,30 @@
 const { z } = require("zod");
 
+// add rooms vaidation schema
 const addRoomSchema = z.object({
-  body: z.object({
-    hotelId: z.string(),
-    name: z.string(),
-    price: z.number(),
-    capacity: z.number(),
-    features: z.array(z.string()),
-  }),
+  hotel_id: z.string().min(24, "Invalid hotel ID"),
+  room_Type: z.string().min(2, "Room type is required"),
+  description: z.string().min(5, "Room description is required"),
+  price_Per_Night: z.string().regex(/^\d+$/, "Price must be a number"),
+  capasity: z.string().regex(/^\d+$/, "Capacity must be a number"),
 });
 
+// update rooms validation schema
 const updateRoomSchema = z.object({
-  body: z.object({
-    name: z.string().optional(),
-    price: z.number().optional(),
+    room_Type: z.string().optional(),
+    price_Per_Night: z.coerce.number().optional(),
     capacity: z.number().optional(),
-    features: z.array(z.string()).optional(),
-  }),
+    description: z.string().optional()
 });
 
+// set availability validation schema
 const setAvailabilitySchema = z.object({
-  body: z.object({
-    roomId: z.string(),
-    startDate: z.string(), // should be date string
-    endDate: z.string(),
-    isAvailable: z.boolean(),
-  }),
+  roomId: z.string().min(24, "Invalid room ID"),
+  startDate: z.string().refine(val => !isNaN(Date.parse(val)), "Invalid start date"),
+  endDate: z.string().refine(val => !isNaN(Date.parse(val)), "Invalid end date"),
+  isAvailable: z.boolean()
 });
+
 
 module.exports = {
   addRoomSchema,

@@ -7,9 +7,9 @@ const { getProfile, updateProfile, deleteAccount } = require("../controllers/use
 
 
 
-router.get("/profile", authenticate, getProfile);
-router.put("/edit-profile", authenticate, validate(updateProfileSchema), updateProfile);
-router.delete("/delete-account", authenticate, deleteAccount);
+router.get("/:id", authenticate, getProfile);
+router.put("/profile/:id", authenticate, validate(updateProfileSchema), updateProfile);
+router.delete("/profile/:id", authenticate, deleteAccount);
 
 
 

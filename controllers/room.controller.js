@@ -1,4 +1,5 @@
 const Room = require("../models/rooms.model");
+// eslint-disable-next-line no-unused-vars
 const Hotel = require("../models/hotels.model");
 const RoomAvailability = require("../models/roomAvailability.model");
 
@@ -8,9 +9,9 @@ const getAvailableRooms = async (req, res) => {
     const { checkInDate, checkOutDate } = req.query;
 
     if (!checkInDate || !checkOutDate) {
-      return res
-        .status(400)
-        .json({ error: "Check-in and check-out dates are required" });
+      return res.status(400).json({
+        error: "checkInDate and checkOutDate are required",
+      });
     }
 
     const start = new Date(checkInDate);
@@ -19,9 +20,10 @@ const getAvailableRooms = async (req, res) => {
     if (start >= end) {
       return res
         .status(400)
-        .json({ error: "Check-out date must be after check-in date" });
+        .json({ error: "Check-out must be after check-in" });
     }
 
+    // Build date range
     const dateList = [];
     let current = new Date(start);
     while (current < end) {
@@ -29,14 +31,16 @@ const getAvailableRooms = async (req, res) => {
       current.setDate(current.getDate() + 1);
     }
 
+    // Find room_ids that are booked on any of those dates
     const unavailableRoomIds = await RoomAvailability.find({
       date: { $in: dateList },
       is_Booked: true,
     }).distinct("room_id");
 
+    // Find rooms not in the above list
     const availableRooms = await Room.find({
       _id: { $nin: unavailableRoomIds },
-    }).populate("hotelId", "name location");
+    }).populate("hotel_id", "hotel_name location");
 
     res.status(200).json({
       message: "Available rooms fetched successfully",
@@ -49,13 +53,13 @@ const getAvailableRooms = async (req, res) => {
 };
 
 // User: Get Room Details
-const getRoomDetails = async (req, res) => {
+const getRoomDetails = async (req, res, next) => {
   try {
     const { room_id } = req.params;
 
     const room = await Room.findById(room_id).populate(
-      "hotelId",
-      "name location description"
+      "hotel_id",
+      "hotel_name location description"
     );
 
     if (!room) {
@@ -67,23 +71,30 @@ const getRoomDetails = async (req, res) => {
       room,
     });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    next(err); // let global error handler take care of it
   }
 };
 
 // Admin: Add Room (with images)
 const addRoom = async (req, res) => {
   try {
-    const { hotelId, name, price, capacity, features } = req.body;
+    const { hotel_id, room_Type, description, price_Per_Night, capasity } =
+      req.body;
 
-    const imagePaths = req.files?.map((file) => file.path) || [];
+    // Validate hotel existence
+    const hotel = await Hotel.findById(hotel_id);
+    if (!hotel) {
+      return res.status(404).json({ error: "Hotel not found" });
+    }
 
+    const imagePaths = req.files.map((file) => file.path) || [];
+    // console.log("Received files:", imagePaths);
     const room = new Room({
-      hotelId,
-      name,
-      price,
-      capacity,
-      features: typeof features === "string" ? JSON.parse(features) : features,
+      hotel_id,
+      room_Type,
+      description,
+      price_Per_Night: parseInt(price_Per_Night),
+      capasity: parseInt(capasity),
       images: imagePaths,
     });
 
@@ -105,17 +116,16 @@ const addRoom = async (req, res) => {
 const updateRoom = async (req, res) => {
   try {
     const roomId = req.params.id;
+
+    // Start with validated body (already parsed by Zod)
     const updateData = { ...req.body };
 
+    // Handle image uploads (req.files from multer)
     if (req.files && req.files.length > 0) {
-      const newImages = req.files.map((file) => file.path);
-      updateData.images = newImages;
+      updateData.images = req.files.map((file) => file.path);
     }
 
-    if (updateData.features && typeof updateData.features === "string") {
-      updateData.features = JSON.parse(updateData.features);
-    }
-
+    // Perform update
     const room = await Room.findByIdAndUpdate(roomId, updateData, {
       new: true,
       runValidators: true,
@@ -165,6 +175,12 @@ const setAvailability = async (req, res) => {
     const start = new Date(startDate);
     const end = new Date(endDate);
 
+    if (start >= end) {
+      return res
+        .status(400)
+        .json({ error: "End date must be after start date" });
+    }
+
     const dateList = [];
     let current = new Date(start);
     while (current <= end) {
@@ -172,15 +188,22 @@ const setAvailability = async (req, res) => {
       current.setDate(current.getDate() + 1);
     }
 
-    const bulkData = dateList.map((date) => ({
-      room_id: roomId,
-      date,
-      is_Booked: !isAvailable,
-    }));
+    // 💡 Use upsert to prevent duplicates
+    const updates = await Promise.all(
+      dateList.map((date) =>
+        RoomAvailability.findOneAndUpdate(
+          { room_id: roomId, date },
+          { room_id: roomId, date, is_Booked: !isAvailable },
+          { upsert: true, new: true }
+        )
+      )
+    );
 
-    await RoomAvailability.insertMany(bulkData);
-
-    res.status(201).json({ message: "Room availability set successfully" });
+    res.status(201).json({
+      message: "Room availability set successfully",
+      updated: updates.length,
+      dates: dateList.map((d) => d.toISOString().slice(0, 10)),
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

@@ -43,14 +43,20 @@ app.use((req, res) => {
 
 // Global Error Handler
 app.use((err, req, res) => {
-  console.error(err.stack);
-  res.status(500).json({ error: "Internal Server Error" });
+  if (err.name === "CastError" && err.kind === "ObjectId") {
+    return res.status(400).json({ error: "Invalid ID format" });
+  }
+  res.status(500).json({ error: err.message });
 });
+
 
 // server port listening....
 app.listen(port, () => {
   console.log(`🚀 Server listening on localhost:${port}`);
 });
+
+
+
 
 
 

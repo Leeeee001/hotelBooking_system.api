@@ -6,7 +6,9 @@ let hotelSchema = mongoose.Schema({
   address: {type: String, required: true},
   pin: {type: Number, required: true},
   city: {type: String},
-  rooms: [{type: mongoose.Schema.Types.ObjectId, ref: "Room"}]
+  created_by: {
+    type: mongoose.Schema.Types.ObjectId, ref: "User",
+    required: true}
 }, { timestamps: true });
 
 let Hotel = mongoose.model("Hotel", hotelSchema);
