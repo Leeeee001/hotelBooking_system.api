@@ -116,9 +116,11 @@ const addRoom = async (req, res) => {
 const updateRoom = async (req, res) => {
   try {
     const roomId = req.params.id;
+    // console.log("roomid: ", roomId);
 
     // Start with validated body (already parsed by Zod)
     const updateData = { ...req.body };
+    // console.log("updateData: ", updateData);
 
     // Handle image uploads (req.files from multer)
     if (req.files && req.files.length > 0) {
@@ -130,6 +132,8 @@ const updateRoom = async (req, res) => {
       new: true,
       runValidators: true,
     });
+    // console.log("room: ", room);
+
 
     if (!room) {
       return res.status(404).json({ error: "Room not found" });
