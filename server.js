@@ -41,12 +41,12 @@ app.use((req, res) => {
   res.status(404).json({ error: "Route not found" });
 });
 
-// Global Error Handler
+// Global Error Handler middleware
 app.use((err, req, res) => {
   if (err.name === "CastError" && err.kind === "ObjectId") {
     return res.status(400).json({ error: "Invalid ID format" });
   }
-  res.status(500).json({ error: err.message });
+  res.status(500).json({ error: err.message("Internal Server Error") });
 });
 
 
