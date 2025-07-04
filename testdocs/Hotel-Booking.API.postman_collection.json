@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"user2\",\r\n  \"email\": \"user2@gmail.com\",\r\n  \"phone_num\": \"6548956628\",\r\n  \"hash_password\": \"123456\",\r\n  \"role\": \"admin\"\r\n}",
+							"raw": "{\r\n  \"name\": \"user3\",\r\n  \"email\": \"user3@gmail.com\",\r\n  \"phone_num\": \"6548955628\",\r\n  \"hash_password\": \"123456\",\r\n  \"role\": \"user\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -82,7 +82,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"user2@gmail.com\",\r\n    \"hash_password\": \"123456\"\r\n}",
+							"raw": "{\r\n    \"email\": \"user3@gmail.com\",\r\n    \"hash_password\": \"123456\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -191,22 +191,14 @@
 						}
 					],
 					"protocolProfileBehavior": {
-						"disabledSystemHeaders": {
-							"content-type": true
-						}
+						"disabledSystemHeaders": {}
 					},
 					"request": {
 						"method": "POST",
-						"header": [
-							{
-								"key": "Conten-Type",
-								"value": "application/json;",
-								"type": "text"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"tanmoychakraborty0041383@gmail.com\"\r\n}",
+							"raw": "{\r\n    \"email\": \"user3@gmail.com\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -586,7 +578,7 @@
 											"bearer": [
 												{
 													"key": "token",
-													"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODVkNTU5NmMzNzVhZWY0YmE5ZmQxZGMiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NTExMzA0MTQsImV4cCI6MTc1MTEzNDAxNH0.kljMpOckE-57S_nj8TK9QK3c-KJjIv6TWHQ-UfuA75g",
+													"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODVkNTU5NmMzNzVhZWY0YmE5ZmQxZGMiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NTExNzU3MzIsImV4cCI6MTc1MTE3OTMzMn0.cJfZN76Sz3wYmckcT54Ib5epSgfglde4CFsVpURYybI",
 													"type": "string"
 												}
 											]
@@ -603,17 +595,17 @@
 												},
 												{
 													"key": "room_Type",
-													"value": "Studio Suite",
+													"value": "Suite",
 													"type": "text"
 												},
 												{
 													"key": "description",
-													"value": "Elegant suite with mini kitchen and sofa lounge",
+													"value": "Elegant suite with mini kitchen ",
 													"type": "text"
 												},
 												{
 													"key": "price_Per_Night",
-													"value": "5200",
+													"value": "5000",
 													"type": "text"
 												},
 												{
@@ -655,7 +647,7 @@
 											"bearer": [
 												{
 													"key": "token",
-													"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODVkNTU5NmMzNzVhZWY0YmE5ZmQxZGMiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NTExMzYyNDksImV4cCI6MTc1MTEzOTg0OX0.UlVv6JjSfgPHR4hvwm4yR3Nc-0WhG9dj6zOGDs1mYmo",
+													"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODVkNTU5NmMzNzVhZWY0YmE5ZmQxZGMiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NTExNzAyMTksImV4cCI6MTc1MTE3MzgxOX0.haUojBNcAnLbxj9z9PFrlWAVPN_EZs7ePXZ9MEyFOko",
 													"type": "string"
 												}
 											]
@@ -663,7 +655,7 @@
 										"method": "DELETE",
 										"header": [],
 										"url": {
-											"raw": "http://localhost:3000/room/685e668b5ef5cc70a28ce402",
+											"raw": "http://localhost:3000/room/685fa10d20cfe2d9d8e6fa05",
 											"protocol": "http",
 											"host": [
 												"localhost"
@@ -671,7 +663,7 @@
 											"port": "3000",
 											"path": [
 												"room",
-												"685e668b5ef5cc70a28ce402"
+												"685fa10d20cfe2d9d8e6fa05"
 											]
 										}
 									},
@@ -685,7 +677,7 @@
 											"bearer": [
 												{
 													"key": "token",
-													"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODVkNTU5NmMzNzVhZWY0YmE5ZmQxZGMiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NTExNDQxMDQsImV4cCI6MTc1MTE0NzcwNH0.0ohdMlxuihHhW2fnYtXy3CBzsJErypa6WjGJI6XG1PE",
+													"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODVkNTU5NmMzNzVhZWY0YmE5ZmQxZGMiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NTExNzU3MzIsImV4cCI6MTc1MTE3OTMzMn0.cJfZN76Sz3wYmckcT54Ib5epSgfglde4CFsVpURYybI",
 													"type": "string"
 												}
 											]
@@ -702,17 +694,17 @@
 												},
 												{
 													"key": "room_Type",
-													"value": "Studio Suite ",
+													"value": "Studio Suite (updated)",
 													"type": "text"
 												},
 												{
 													"key": "description",
-													"value": "Newly furnished room",
+													"value": "Newly furnished room & also many things",
 													"type": "text"
 												},
 												{
 													"key": "price_Per_Night",
-													"value": "5150",
+													"value": "5100",
 													"type": "text"
 												},
 												{
@@ -733,7 +725,7 @@
 											]
 										},
 										"url": {
-											"raw": "http://localhost:3000/room/685fa1ad20cfe2d9d8e6fa0d",
+											"raw": "http://localhost:3000/room/685f9870e2e5645a5111f7a6",
 											"protocol": "http",
 											"host": [
 												"localhost"
@@ -741,7 +733,7 @@
 											"port": "3000",
 											"path": [
 												"room",
-												"685fa1ad20cfe2d9d8e6fa0d"
+												"685f9870e2e5645a5111f7a6"
 											]
 										}
 									},
@@ -755,7 +747,7 @@
 											"bearer": [
 												{
 													"key": "token",
-													"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODVkNTU5NmMzNzVhZWY0YmE5ZmQxZGMiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NTExMzA0MTQsImV4cCI6MTc1MTEzNDAxNH0.kljMpOckE-57S_nj8TK9QK3c-KJjIv6TWHQ-UfuA75g",
+													"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODVkNTU5NmMzNzVhZWY0YmE5ZmQxZGMiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NTExNzAyMTksImV4cCI6MTc1MTE3MzgxOX0.haUojBNcAnLbxj9z9PFrlWAVPN_EZs7ePXZ9MEyFOko",
 													"type": "string"
 												}
 											]
@@ -795,7 +787,7 @@
 											"bearer": [
 												{
 													"key": "token",
-													"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODVkNTU5NmMzNzVhZWY0YmE5ZmQxZGMiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NTEwODk1MjksImV4cCI6MTc1MTA5MzEyOX0.iLlsBdnHT__XlUU-yf2_HBhjabSQUFLVdLdhjy_rx6E",
+													"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODVkNTU5NmMzNzVhZWY0YmE5ZmQxZGMiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NTExNzAyMTksImV4cCI6MTc1MTE3MzgxOX0.haUojBNcAnLbxj9z9PFrlWAVPN_EZs7ePXZ9MEyFOko",
 													"type": "string"
 												}
 											]
@@ -803,7 +795,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://localhost:3000/room/685e668b5ef5cc70a28ce402",
+											"raw": "http://localhost:3000/room/685fa0bd20cfe2d9d8e6fa01",
 											"protocol": "http",
 											"host": [
 												"localhost"
@@ -811,7 +803,7 @@
 											"port": "3000",
 											"path": [
 												"room",
-												"685e668b5ef5cc70a28ce402"
+												"685fa0bd20cfe2d9d8e6fa01"
 											]
 										}
 									},
@@ -976,7 +968,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODVkNTU5NmMzNzVhZWY0YmE5ZmQxZGMiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NTExMzA0MTQsImV4cCI6MTc1MTEzNDAxNH0.kljMpOckE-57S_nj8TK9QK3c-KJjIv6TWHQ-UfuA75g",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODVkNTU5NmMzNzVhZWY0YmE5ZmQxZGMiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NTExNDQxMDQsImV4cCI6MTc1MTE0NzcwNH0.0ohdMlxuihHhW2fnYtXy3CBzsJErypa6WjGJI6XG1PE",
 											"type": "string"
 										}
 									]
