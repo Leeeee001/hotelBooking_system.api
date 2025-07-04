@@ -37,13 +37,7 @@ router.get("/google/callback",
 // Custom Credential register-login routes  
 router.post("/register", validate(registerSchema), register);
 router.post("/verify-otp", validate(verifyOtpSchema), verifyOtp);
-
-// not fixed yet to test
-router.post("/resendOtp", (req, res) => {
-  console.log("BODY RECEIVED:", req.body);
-  res.json({ received: "tanmoy" });
-}, validate(resendOtpSchema), resendOtp);
-
+router.post("/resendOtp", validate(resendOtpSchema), resendOtp);
 router.post("/login", validate(loginSchema), login);
 router.post("/forgot-password", validate(forgotPasswordSchema), forgotPassword);
 router.post("/reset-password", validate(resetPasswordSchema), resetPassword);

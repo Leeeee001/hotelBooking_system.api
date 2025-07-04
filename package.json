@@ -32,6 +32,7 @@
     "nodemailer-express-handlebars": "^7.0.0",
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
+    "razorpay": "^2.9.6",
     "zod": "^3.25.41"
   },
   "devDependencies": {
