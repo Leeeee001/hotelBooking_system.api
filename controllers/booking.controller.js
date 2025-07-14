@@ -7,7 +7,7 @@ const RoomAvailability = require("../models/roomAvailability.model");
 const initiateBooking = async (req, res) => {
   try {
     const { roomId, checkInDate, checkOutDate } = req.body;
-    console.log("Request Body:", req.body);
+    // console.log("Request Body:", req.body);
 
     if (!roomId || !checkInDate || !checkOutDate) {
       return res
@@ -34,7 +34,7 @@ const initiateBooking = async (req, res) => {
       dateList.push(new Date(current));
       current.setDate(current.getDate() + 1);
     }
-    console.log("Date List:", dateList);
+    // console.log("Date List:", dateList);
 
     // Check if any of those dates are already booked
     const roomObjectId = new mongoose.Types.ObjectId(roomId);
@@ -50,7 +50,7 @@ const initiateBooking = async (req, res) => {
         
       });
     }
-    console.log("availabilities:", availabilities);
+    // console.log("availabilities:", availabilities);
 
     // Create payment order
     const totalAmount = room.price_Per_Night * dateList.length;
@@ -70,18 +70,18 @@ const initiateBooking = async (req, res) => {
       totalAmount,
     });
 
-    console.log("Razorpay Order:", razorpayOrder);
-    console.log(
-      "response:",
-      res.status(200).json({
-        message: "Payment order created",
-        order_id: razorpayOrder.id,
-        room,
-        checkInDate,
-        checkOutDate,
-        totalAmount,
-      })
-    );
+    // console.log("Razorpay Order:", razorpayOrder);
+    // console.log(
+    //   "response:",
+    //   res.status(200).json({
+    //     message: "Payment order created",
+    //     order_id: razorpayOrder.id,
+    //     room,
+    //     checkInDate,
+    //     checkOutDate,
+    //     totalAmount,
+    //   })
+    // );
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
