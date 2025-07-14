@@ -1,5 +1,4 @@
 const Room = require("../models/rooms.model");
-// eslint-disable-next-line no-unused-vars
 const Hotel = require("../models/hotels.model");
 const RoomAvailability = require("../models/roomAvailability.model");
 
@@ -180,11 +179,10 @@ const setAvailability = async (req, res) => {
     const end = new Date(endDate);
 
     if (start >= end) {
-      return res
-        .status(400)
-        .json({ error: "End date must be after start date" });
+      return res.status(400).json({ error: "End date must be after start date" });
     }
 
+    // Generate all dates between start and end
     const dateList = [];
     let current = new Date(start);
     while (current <= end) {
@@ -192,7 +190,7 @@ const setAvailability = async (req, res) => {
       current.setDate(current.getDate() + 1);
     }
 
-    // 💡 Use upsert to prevent duplicates
+    // Create or update availability for each date
     const updates = await Promise.all(
       dateList.map((date) =>
         RoomAvailability.findOneAndUpdate(
@@ -205,8 +203,9 @@ const setAvailability = async (req, res) => {
 
     res.status(201).json({
       message: "Room availability set successfully",
+      roomId,
       updated: updates.length,
-      dates: dateList.map((d) => d.toISOString().slice(0, 10)),
+      dates: dateList.map((d) => d.toISOString().split("T")[0]),
     });
   } catch (err) {
     res.status(500).json({ error: err.message });

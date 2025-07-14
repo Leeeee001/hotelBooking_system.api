@@ -17,6 +17,15 @@ const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded());
 app.use(bodyParser.json());
 
+// swagger doc packages
+const swaggerJsdoc = require("swagger-jsdoc");
+const swaggerUi = require("swagger-ui-express");
+const swagger_option = require("./config/swaggerOptions.json").options;
+swagger_option.apis = ["./docs/**/*.yaml"];
+const specs = swaggerJsdoc(swagger_option);
+exports.specs = specs;
+
+
 dbConnect(); // database connection....
 const port = process.env.PORT || 5000;
 
@@ -42,12 +51,16 @@ app.use((req, res) => {
 });
 
 // Global Error Handler middleware
-app.use((err, req, res) => {
+app.use((err, req, res, next) => {
   if (err.name === "CastError" && err.kind === "ObjectId") {
     return res.status(400).json({ error: "Invalid ID format" });
   }
   res.status(500).json({ error: err.message("Internal Server Error") });
+  next();
 });
+
+// Swagger UI setup
+app.use( "/api-docs", swaggerUi.serve, swaggerUi.setup(specs) );
 
 
 // server port listening....

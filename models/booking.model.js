@@ -8,6 +8,18 @@ let bookingSchema = mongoose.Schema({
   room_Type: {type: String, required: true},
   days: {type: Number, required: true},
   total_price: {type: Number},
+    status: {
+    type: String,
+    enum: ["pending", "confirmed", "cancelled"],
+    default: "pending",
+  },
+  payment_id: { type: String },
+  order_id: { type: String },
+  payment_status: {
+    type: String,
+    enum: ["pending", "success", "failed"],
+    default: "pending",
+  }
 }, { timestamps: true });
 
 let Booking = mongoose.model("Booking", bookingSchema);

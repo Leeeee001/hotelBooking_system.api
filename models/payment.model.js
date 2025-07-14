@@ -19,7 +19,8 @@ const paymentSchema = new mongoose.Schema({
           city: { type: String },
           state: { type: String },
           postalCode: { type: String },
-          country: { type: String }}
+          country: { type: String }
+        }
     },
     meta_data: { type: Map, of: String },
 }, { timestamps: true });

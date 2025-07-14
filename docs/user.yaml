@@ -1,0 +1,119 @@
+paths:
+  /user/login:
+    post:
+      summary: Login user
+      tags:
+        - User
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userName:
+                  type: string
+                password:
+                  type: string
+              required:
+                - userName
+                - password
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Login Successfull
+                  type:
+                    type: string
+                    example: success
+                  token:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        '400':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Incorrect password
+                  type:
+                    type: string
+                    example: failed
+                  userData:
+                    type: array
+                    example: []
+  /user/signup:
+    post:
+      summary: signup user
+      tags:
+        - User
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userName:
+                  type: string
+                password:
+                  type: string
+                mobileNumber:
+                  type: string
+                role:
+                  type: string
+                  example: Admin  
+              required:
+                - userName
+                - password
+                - mobileNumber
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Login Successfull
+                  type:
+                    type: string
+                    example: success
+                  token:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+                  data:
+                    type: object
+                    properties:
+                      userName:
+                        type: string
+                      password:
+                        type: string  
+
+        '400':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Incorrect password
+                  type:
+                    type: string
+                    example: failed
+                  userData:
+                    type: array
+                    example: []
