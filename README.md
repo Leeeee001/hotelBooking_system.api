@@ -12,7 +12,7 @@ This is a RESTful API for a Hotel Room Booking System, built with Node.js (Expre
 
 📦 Room booking and cancellation system
 
-💳 Secure payments via Stripe
+💳 Secure payments via Razor-pay
 
 🧾 User reviews and search history
 
@@ -25,4 +25,4 @@ This is a RESTful API for a Hotel Room Booking System, built with Node.js (Expre
 
 * _Authentication: JWT (JSON Web Tokens)
 
-* _Payments: Razorpay payment gateway API
+* _Payments: Razor-pay payment gateway API
