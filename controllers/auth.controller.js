@@ -3,7 +3,14 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/users.model");
 const { generateOTP, otpExpiry, verifyOTP } = require("../utils/otpHelpers");
 const sendEmail = require("../services/emailService");
-const { registerSchema, loginSchema, verifyOtpSchema, resendOtpSchema, forgotPasswordSchema, resetPasswordSchema } = require("../validation/auth.validation");
+const {
+  registerSchema,
+  loginSchema,
+  verifyOtpSchema,
+  resendOtpSchema,
+  forgotPasswordSchema,
+  resetPasswordSchema,
+} = require("../validation/auth.validation");
 
 // Register new user
 const register = async (req, res) => {
@@ -47,7 +54,9 @@ const register = async (req, res) => {
       context: { otp, purpose, otpExp },
     });
 
-    return res.status(201).json({ message: "Registration successful, check your email for OTP" });
+    return res
+      .status(201)
+      .json({ message: "Registration successful, check your email for OTP" });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
@@ -67,7 +76,8 @@ const verifyOtp = async (req, res) => {
     const expiryTime = new Date(user.otp.expiry).getTime();
 
     const isValid = verifyOTP(otp, storedOtp, expiryTime);
-    if (!isValid) return res.status(400).json({ error: "Invalid or expired OTP" });
+    if (!isValid)
+      return res.status(400).json({ error: "Invalid or expired OTP" });
 
     user.is_verified = true;
     user.otp = { code: null, expiry: null };
@@ -82,10 +92,12 @@ const verifyOtp = async (req, res) => {
       to: email,
       subject: "🎉 Welcome to Luxury Hotels!",
       template: "welcomeMail",
-      context: { name, bookingLink }
+      context: { name, bookingLink },
     });
 
-    return res.status(200).json({ message: `OTP verified successfully, Welcome ${name}` });
+    return res
+      .status(200)
+      .json({ message: `OTP verified successfully, Welcome ${name}` });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
@@ -99,20 +111,22 @@ const resendOtp = async (req, res) => {
 
     const user = await User.findOne({ $or: [{ email }, { phone_num }] });
     if (!user) return res.status(404).json({ error: "User not found" });
-    if (user.is_verified) return res.status(400).json({ error: "User is already verified" });
+    if (user.is_verified)
+      return res.status(400).json({ error: "User is already verified" });
 
     const now = Date.now();
     const expiryTime = new Date(user.otp.expiry).getTime();
 
     const isExpired = expiryTime < now;
-    if (!isExpired) return res.status(400).json({ error: "OTP has not expired yet" });
+    if (!isExpired)
+      return res.status(400).json({ error: "OTP has not expired yet" });
 
     // Generate new OTP and expiry
     const newOtp = generateOTP();
-    const newExpiry = otpExpiry(); 
+    const newExpiry = otpExpiry();
 
     user.otp = { code: newOtp, expiry: newExpiry };
-    
+
     await user.save();
 
     // Send email with new OTP
@@ -124,12 +138,10 @@ const resendOtp = async (req, res) => {
     });
 
     return res.status(200).json({ message: "OTP resent successfully" });
-
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
 };
-
 
 // Login
 const login = async (req, res) => {
@@ -139,13 +151,20 @@ const login = async (req, res) => {
     const { email, phone_num, hash_password } = parsed.data;
 
     const user = await User.findOne({
-      $or: [{ email }, { phone_num }],
+      $or: [{ email }, phone_num && { phone_num }].filter(Boolean)
     });
+    // console.log("Query:", {
+    //   $or: [{ email }, { phone_num }],
+    // });
+    // console.log("User:", user);
 
     if (!user) return res.status(404).json({ error: "User not found" });
-    if (!user.is_verified) return res.status(401).json({ error: "User not verified" });
-    if (!user.is_active) return res.status(403).json({ error: "User is inactive" });
-    if (user.is_deleted) return res.status(410).json({ error: "User is deleted" });
+    if (!user.is_verified)
+      return res.status(401).json({ error: "User not verified" });
+    if (!user.is_active)
+      return res.status(403).json({ error: "User is inactive" });
+    if (user.is_deleted)
+      return res.status(410).json({ error: "User is deleted" });
 
     // Compare password
     const isMatch = await bcrypt.compare(hash_password, user.hash_password);
@@ -157,7 +176,7 @@ const login = async (req, res) => {
       process.env.SECRET,
       { expiresIn: process.env.TOKEN_EXPIRY || "24h" }
     );
-    // console.log("Token:", token);
+    console.log("Token:", token);
 
     return res.status(200).json({
       message: "Login successful",
@@ -174,7 +193,7 @@ const login = async (req, res) => {
   }
 };
 
-// forget-Password 
+// forget-Password
 const forgotPassword = async (req, res) => {
   try {
     const parsed = forgotPasswordSchema.safeParse(req.body);
@@ -182,7 +201,7 @@ const forgotPassword = async (req, res) => {
     const { email, phone_num } = parsed.data;
 
     const user = await User.findOne({
-      $or: [ { email }, { phone_num } ]
+      $or: [{ email }, { phone_num }],
     });
 
     if (!user) return res.status(404).json({ error: "User not found" });
@@ -200,7 +219,7 @@ const forgotPassword = async (req, res) => {
       to: user.email,
       subject: "Reset-Password OTP",
       template: "otpMail",
-      context: { otp, purpose, otpExpiry }
+      context: { otp, purpose, otpExpiry },
     });
 
     return res.status(200).json({ message: " OTP sent to email" });
@@ -218,7 +237,7 @@ const resetPassword = async (req, res) => {
 
     // Find user by email or phone number
     const user = await User.findOne({
-      $or: [ { email }, { phone_num } ]
+      $or: [{ email }, { phone_num }],
     });
 
     if (!user) {
@@ -245,9 +264,10 @@ const resetPassword = async (req, res) => {
     user.otp = { code: null, expiry: null };
     await user.save();
 
-    return res
-      .status(200)
-      .json({ message: "Password reset successfully. Please login with your new password." });
+    return res.status(200).json({
+      message:
+        "Password reset successfully. Please login with your new password.",
+    });
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
@@ -256,15 +276,18 @@ const resetPassword = async (req, res) => {
 // user logout
 const logout = async (req, res) => {
   try {
-
     res.status(200).json({ message: "User logged out successfully" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
 
-
-
-module.exports = { register, login, verifyOtp, resendOtp, forgotPassword, resetPassword, logout };
-
-
+module.exports = {
+  register,
+  login,
+  verifyOtp,
+  resendOtp,
+  forgotPassword,
+  resetPassword,
+  logout,
+};
