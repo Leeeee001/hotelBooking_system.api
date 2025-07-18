@@ -176,7 +176,7 @@ const login = async (req, res) => {
       process.env.SECRET,
       { expiresIn: process.env.TOKEN_EXPIRY || "24h" }
     );
-    console.log("Token:", token);
+    // console.log("Token:", token);
 
     return res.status(200).json({
       message: "Login successful",
