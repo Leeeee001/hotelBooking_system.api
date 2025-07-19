@@ -26,6 +26,8 @@ passport.use(
 
         let user = await User.findOne({ email });
 
+
+        let isNewUser = false;
         if (!user) {
           user = new User({
             name,
@@ -36,18 +38,20 @@ passport.use(
             role,
           });
           await user.save();
+          isNewUser = true;
         }
 
-        // Send welcome mail
-        const nameFirst = user.name.split(" ")[0];
-        const bookingLink = "http://localhost:3000/";
-
-        await sendEmail({
-          to: user.email,
-          subject: "🎉 Welcome to Luxury Hotels!",
-          template: "welcomeMail",
-          context: { name: nameFirst, bookingLink },
-        });
+        // Send welcome mail only for new users
+        if (isNewUser) {
+          const nameFirst = user.name.split(" ")[0];
+          const bookingLink = "http://localhost:3000/";
+          await sendEmail({
+            to: user.email,
+            subject: "🎉 Welcome to Luxury Hotels!",
+            template: "welcomeMail",
+            context: { name: nameFirst, bookingLink },
+          });
+        }
 
         const token = jwt.sign(
           { userId: user._id, role: user.role },

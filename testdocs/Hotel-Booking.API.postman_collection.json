@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "33c8ee94-c5ac-4e39-a50f-b950e27cc40c",
-		"name": "Hotel-RoomBooking.API",
+		"name": "Hotel-Booking.API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "36748154"
 	},
@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"user3\",\r\n  \"email\": \"user3@gmail.com\",\r\n  \"phone_num\": \"6548955628\",\r\n  \"hash_password\": \"123456\",\r\n  \"role\": \"user\"\r\n}",
+							"raw": "{\r\n  \"name\": \"user4\",\r\n  \"email\": \"user4@gmail.com\",\r\n  \"phone_num\": \"6548955628\",\r\n  \"hash_password\": \"123456\",\r\n  \"role\": \"admin\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -24,12 +24,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/auth/register",
-							"protocol": "http",
+							"raw": "{{baseURL}}/auth/register",
 							"host": [
-								"localhost"
+								"{{baseURL}}"
 							],
-							"port": "3000",
 							"path": [
 								"auth",
 								"register"
@@ -82,7 +80,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"user3@gmail.com\",\r\n    \"hash_password\": \"123456\"\r\n}",
+							"raw": "{\r\n    \"email\": \"tanmoychakraborty0041383@gmail.com\",\r\n    \"hash_password\": \"123456\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -90,12 +88,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/auth/login",
-							"protocol": "http",
+							"raw": "{{baseURL}}/auth/login",
 							"host": [
-								"localhost"
+								"{{baseURL}}"
 							],
-							"port": "3000",
 							"path": [
 								"auth",
 								"login"
@@ -111,7 +107,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"user2@gmail.com\",\r\n    \"otp\": \"826544\"\r\n}",
+							"raw": "{\r\n    \"email\": \"user5@gmail.com\",\r\n    \"otp\": \"888524\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -119,12 +115,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/auth/verify-otp",
-							"protocol": "http",
+							"raw": "{{baseURL}}/auth/verify-otp",
 							"host": [
-								"localhost"
+								"{{baseURL}}"
 							],
-							"port": "3000",
 							"path": [
 								"auth",
 								"verify-otp"
@@ -198,7 +192,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"user3@gmail.com\"\r\n}",
+							"raw": "{\r\n    \"email\": \"tanmoychakraborty0041383@gmail.com\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -206,12 +200,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/auth/resendOtp",
-							"protocol": "http",
+							"raw": "{{baseURL}}/auth/resendOtp",
 							"host": [
-								"localhost"
+								"{{baseURL}}"
 							],
-							"port": "3000",
 							"path": [
 								"auth",
 								"resendOtp"
@@ -235,12 +227,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/auth/forgot-password",
-							"protocol": "http",
+							"raw": "{{baseURL}}/auth/forgot-password",
 							"host": [
-								"localhost"
+								"{{baseURL}}"
 							],
-							"port": "3000",
 							"path": [
 								"auth",
 								"forgot-password"
@@ -264,12 +254,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/auth/reset-password",
-							"protocol": "http",
+							"raw": "{{baseURL}}/auth/reset-password",
 							"host": [
-								"localhost"
+								"{{baseURL}}"
 							],
-							"port": "3000",
 							"path": [
 								"auth",
 								"reset-password"
@@ -284,12 +272,10 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/auth/google?role=customer",
-							"protocol": "http",
+							"raw": "{{baseURL}}/auth/google?role=user",
 							"host": [
-								"localhost"
+								"{{baseURL}}"
 							],
-							"port": "3000",
 							"path": [
 								"auth",
 								"google"
@@ -297,7 +283,7 @@
 							"query": [
 								{
 									"key": "role",
-									"value": "customer"
+									"value": "user"
 								}
 							]
 						}
@@ -324,15 +310,36 @@
 							"raw": "{\r\n    \"email\": \"user2@gmail.com\",\r\n    \"hash_password\": \"123456\"\r\n}"
 						},
 						"url": {
-							"raw": "http://localhost:3000/auth/logout",
-							"protocol": "http",
+							"raw": "{{baseURL}}/auth/logout",
 							"host": [
-								"localhost"
+								"{{baseURL}}"
 							],
-							"port": "3000",
 							"path": [
 								"auth",
 								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "googleLogin",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}auth/google?",
+							"host": [
+								"{{baseURL}}auth"
+							],
+							"path": [
+								"google"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null
+								}
 							]
 						}
 					},
@@ -354,7 +361,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODU4MjI0ZmRlZDNlZWQ1Yjc3NDQ4YTMiLCJyb2xlIjoidXNlciIsImlhdCI6MTc1MDY1NTc0OCwiZXhwIjoxNzUwNjU5MzQ4fQ.yCPKywjbGe2t5AGc-4saKguVPe4ewBf2BZC53s1weaM",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODc2ODY4MGUzMzQ0YzE0ZGRiYWYwOTEiLCJyb2xlIjoidXNlciIsImlhdCI6MTc1MjgxMTI2OCwiZXhwIjoxNzUyODE0ODY4fQ.cZ8tbKD1u_SpGTDHPrxWPd_NbGs9wZ21clt1INaufEE",
 											"type": "string"
 										}
 									]
@@ -363,7 +370,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "",
+									"raw": "{\r\n    \"roomId\": \"685fa00c20cfe2d9d8e6f9fd\",\r\n    \"checkInDate\": \"2025-08-03\",\r\n    \"checkOutDate\": \"2025-08-05\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -371,15 +378,15 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:3000/user/book-room",
+									"raw": "http://localhost:3000/booking/initiate-booking",
 									"protocol": "http",
 									"host": [
 										"localhost"
 									],
 									"port": "3000",
 									"path": [
-										"user",
-										"book-room"
+										"booking",
+										"initiate-booking"
 									]
 								}
 							},
@@ -398,17 +405,15 @@
 										}
 									]
 								},
-								"method": "PUT",
+								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:3000/user/bookings",
-									"protocol": "http",
+									"raw": "{{baseURL}}/booking/bookings",
 									"host": [
-										"localhost"
+										"{{baseURL}}"
 									],
-									"port": "3000",
 									"path": [
-										"user",
+										"booking",
 										"bookings"
 									]
 								}
@@ -431,12 +436,10 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:3000/user/cancel-booking/:booking_id",
-									"protocol": "http",
+									"raw": "{{baseURL}}/user/cancel-booking/:booking_id",
 									"host": [
-										"localhost"
+										"{{baseURL}}"
 									],
-									"port": "3000",
 									"path": [
 										"user",
 										"cancel-booking",
@@ -474,12 +477,10 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/user/",
-							"protocol": "http",
+							"raw": "{{baseURL}}/user/",
 							"host": [
-								"localhost"
+								"{{baseURL}}"
 							],
-							"port": "3000",
 							"path": [
 								"user",
 								""
@@ -513,12 +514,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/user/profile/",
-							"protocol": "http",
+							"raw": "{{baseURL}}/user/profile/",
 							"host": [
-								"localhost"
+								"{{baseURL}}"
 							],
-							"port": "3000",
 							"path": [
 								"user",
 								"profile",
@@ -544,12 +543,10 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/user/profile/6858224fded3eed5b77448a3",
-							"protocol": "http",
+							"raw": "{{baseURL}}/user/profile/6858224fded3eed5b77448a3",
 							"host": [
-								"localhost"
+								"{{baseURL}}"
 							],
-							"port": "3000",
 							"path": [
 								"user",
 								"profile",
@@ -626,12 +623,10 @@
 											]
 										},
 										"url": {
-											"raw": "http://localhost:3000/room",
-											"protocol": "http",
+											"raw": "{{baseURL}}/room",
 											"host": [
-												"localhost"
+												"{{baseURL}}"
 											],
-											"port": "3000",
 											"path": [
 												"room"
 											]
@@ -655,12 +650,10 @@
 										"method": "DELETE",
 										"header": [],
 										"url": {
-											"raw": "http://localhost:3000/room/685fa10d20cfe2d9d8e6fa05",
-											"protocol": "http",
+											"raw": "{{baseURL}}/room/685fa10d20cfe2d9d8e6fa05",
 											"host": [
-												"localhost"
+												"{{baseURL}}"
 											],
-											"port": "3000",
 											"path": [
 												"room",
 												"685fa10d20cfe2d9d8e6fa05"
@@ -725,12 +718,10 @@
 											]
 										},
 										"url": {
-											"raw": "http://localhost:3000/room/685f9870e2e5645a5111f7a6",
-											"protocol": "http",
+											"raw": "{{baseURL}}/room/685f9870e2e5645a5111f7a6",
 											"host": [
-												"localhost"
+												"{{baseURL}}"
 											],
-											"port": "3000",
 											"path": [
 												"room",
 												"685f9870e2e5645a5111f7a6"
@@ -755,12 +746,10 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://localhost:3000/room/available?checkInDate=2024-07-01&checkOutDate=2024-07-03",
-											"protocol": "http",
+											"raw": "{{baseURL}}/room/available?checkInDate=2024-07-01&checkOutDate=2024-07-03",
 											"host": [
-												"localhost"
+												"{{baseURL}}"
 											],
-											"port": "3000",
 											"path": [
 												"room",
 												"available"
@@ -795,12 +784,10 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://localhost:3000/room/685fa0bd20cfe2d9d8e6fa01",
-											"protocol": "http",
+											"raw": "{{baseURL}}/room/685fa0bd20cfe2d9d8e6fa01",
 											"host": [
-												"localhost"
+												"{{baseURL}}"
 											],
-											"port": "3000",
 											"path": [
 												"room",
 												"685fa0bd20cfe2d9d8e6fa01"
@@ -817,7 +804,7 @@
 											"bearer": [
 												{
 													"key": "token",
-													"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODVkNTU5NmMzNzVhZWY0YmE5ZmQxZGMiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NTEwMDQwODksImV4cCI6MTc1MTAwNzY4OX0.-z7Nng4WHMfoGwWbOuQ-nGkNSV1exrSHHWb0BGGun8U",
+													"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODVkNTU5NmMzNzVhZWY0YmE5ZmQxZGMiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NTIzMzM3NTUsImV4cCI6MTc1MjMzNzM1NX0.p7UJIeQ-YDu1sea8iS0UojnDsVf9S6t4f5ofiLL9OXU",
 													"type": "string"
 												}
 											]
@@ -826,7 +813,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n  \"roomId\": \"685e25eff1c4c5210b001d7c\",\r\n  \"startDate\": \"2024-07-01\",\r\n  \"endDate\": \"2024-07-05\",\r\n  \"isAvailable\": true\r\n}",
+											"raw": "{\r\n    \"roomId\": \"685fa00c20cfe2d9d8e6f9fd\",\r\n    \"startDate\": \"2025-07-01\",\r\n    \"endDate\": \"2025-07-07\",\r\n    \"isAvailable\": true\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -834,12 +821,10 @@
 											}
 										},
 										"url": {
-											"raw": "http://localhost:3000/room/availability",
-											"protocol": "http",
+											"raw": "{{baseURL}}/room/availability",
 											"host": [
-												"localhost"
+												"{{baseURL}}"
 											],
-											"port": "3000",
 											"path": [
 												"room",
 												"availability"
@@ -875,12 +860,10 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:3000/admin/hotel",
-									"protocol": "http",
+									"raw": "{{baseURL}}/admin/hotel",
 									"host": [
-										"localhost"
+										"{{baseURL}}"
 									],
-									"port": "3000",
 									"path": [
 										"admin",
 										"hotel"
@@ -905,12 +888,10 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:3000/admin/hotel/685fcc22b77144dd60a4b108",
-									"protocol": "http",
+									"raw": "{{baseURL}}/admin/hotel/685fcc22b77144dd60a4b108",
 									"host": [
-										"localhost"
+										"{{baseURL}}"
 									],
-									"port": "3000",
 									"path": [
 										"admin",
 										"hotel",
@@ -945,12 +926,10 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:3000/admin/hotel/685fcc22b77144dd60a4b108",
-									"protocol": "http",
+									"raw": "{{baseURL}}/admin/hotel/685fcc22b77144dd60a4b108",
 									"host": [
-										"localhost"
+										"{{baseURL}}"
 									],
-									"port": "3000",
 									"path": [
 										"admin",
 										"hotel",
@@ -976,12 +955,10 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:3000/admin/getAllHotels",
-									"protocol": "http",
+									"raw": "{{baseURL}}/admin/getAllHotels",
 									"host": [
-										"localhost"
+										"{{baseURL}}"
 									],
-									"port": "3000",
 									"path": [
 										"admin",
 										"getAllHotels"
@@ -993,6 +970,13 @@
 					]
 				}
 			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": "http://localhost:3000",
+			"type": "default"
 		}
 	]
 }

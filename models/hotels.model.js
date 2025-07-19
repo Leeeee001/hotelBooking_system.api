@@ -11,5 +11,6 @@ let hotelSchema = mongoose.Schema({
     required: true}
 }, { timestamps: true });
 
+
 let Hotel = mongoose.model("Hotel", hotelSchema);
 module.exports = Hotel;

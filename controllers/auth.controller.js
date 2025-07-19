@@ -18,11 +18,14 @@ const register = async (req, res) => {
     const parsed = registerSchema.safeParse(req.body);
 
     const { name, email, phone_num, hash_password, role } = parsed.data;
+    console.log("req data: ", parsed.data);
 
     const existingUser = await User.findOne({
-      $or: [{ email }, { phone_num }],
+      $or: [{ email }, { phone_num }]
     });
+
     if (existingUser) {
+      // console.log("User: ", existingUser);
       return res.status(400).json({ error: "User already exists" });
     }
 
@@ -42,8 +45,8 @@ const register = async (req, res) => {
     });
 
     // console.log(user)
-
     await user.save();
+
     // Sending OTP for verify ragistration
     const purpose = "account varification";
     const otpExp = process.env.OTP_EXPIRY_MINUTES;
@@ -151,7 +154,7 @@ const login = async (req, res) => {
     const { email, phone_num, hash_password } = parsed.data;
 
     const user = await User.findOne({
-      $or: [{ email }, phone_num && { phone_num }].filter(Boolean)
+      $or: [{ email }, phone_num && { phone_num }].filter(Boolean),
     });
     // console.log("Query:", {
     //   $or: [{ email }, { phone_num }],
