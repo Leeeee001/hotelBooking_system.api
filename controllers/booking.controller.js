@@ -1,107 +1,86 @@
-const Razorpay = require("../services/razorpayInstance");
 const Booking = require("../models/booking.model");
 const Room = require("../models/rooms.model");
 const RoomAvailability = require("../models/roomAvailability.model");
+const { createRazorpayOrder } = require("../services/paymentService");
 
-
-const bookRoom = async (req, res) => {
+const createBooking = async (req, res) => {
   try {
+    const user_id = req.user._id;
     const { roomId, checkInDate, checkOutDate } = req.body;
-    const userId = req.user._id;
+    // console.log("Booking request:", { roomId, checkInDate, checkOutDate });
 
-    console.log("Booking request:", req.body);
-
-    // Validate required input
-    if (!roomId || !checkInDate || !checkOutDate) {
-      return res.status(400).json({ error: "All fields are required" });
+    // Validate dates
+    const checkIn = new Date(checkInDate);
+    const checkOut = new Date(checkOutDate);
+    if (checkIn >= checkOut) {
+      return res
+        .status(400)
+        .json({ error: "Check-out must be after check-in" });
     }
 
-    const start = new Date(checkInDate);
-    const end = new Date(checkOutDate);
-
-    if (start >= end) {
-      return res.status(400).json({ error: "Check-out must be after check-in" });
-    }
-
-    // Check room existence
-    const room = await Room.findOne({ _id: roomId });
+    // Check if room exists
+    const room = await Room.findById(roomId);
     if (!room) return res.status(404).json({ error: "Room not found" });
-    console.log("room: ", room);
+    // console.log("Room:", room);
 
-    // Build list of dates to check
+    // Create date list
     const dateList = [];
-    let current = new Date(start);
-    while (current < end) {
+    let current = new Date(checkIn);
+    while (current < checkOut) {
       dateList.push(new Date(current.toISOString().split("T")[0]));
       current.setDate(current.getDate() + 1);
     }
-    console.log("Date list for availability check:", dateList);
+    // console.log("Checking dates:", dateList);
 
-    // Check room availability for all dates
+    // Check availability using room._id directly (already ObjectId)
     const unavailable = await RoomAvailability.find({
-      room_id: roomId,
+      room_id: room._id,
       date: { $in: dateList },
       is_Booked: true,
     });
+    // console.log("Unavailable dates:", unavailable);
 
     if (unavailable.length > 0) {
-      return res.status(400).json({ error: "Room not available for selected dates" });
+      return res.status(400).json({
+        error: "Room not available on selected dates",
+        unavailableDates: unavailable.map(
+          (d) => d.date.toISOString().split("T")[0]
+        ),
+      });
     }
 
     // Calculate cost
     const totalDays = dateList.length;
-    const totalAmount = room.price_Per_Night * totalDays;
+    const totalPrice = room.price_Per_Night * totalDays;
 
     // Create Razorpay order
-    const razorpayOrder = await Razorpay.orders.create({
-      amount: totalAmount * 100, // in paisa
-      currency: "INR",
-      receipt: `rcpt_${Date.now()}`,
-    });
+    const razorpayOrder = await createRazorpayOrder(totalPrice);
 
-    // Temporarily create a booking in "pending" state
-    const booking = new Booking({
-      user_id: userId,
-      room_id: roomId,
+    // Create Booking entry
+    const newBooking = new Booking({
+      user_id,
+      room_id: room._id,
+      checkin_date: checkIn,
+      checkout_date: checkOut,
       room_Type: room.room_Type,
-      checkin_date: start,
-      checkout_date: end,
       days: totalDays,
-      total_price: totalAmount,
-      order_id: razorpayOrder.id, // Store order ID for later verification
-      payment_status: "pending",
-      status: "pending"
-    });
-    console.log("Booking created:", booking);
-    await booking.save();
-
-    // Return all data to frontend
-    res.status(200).json({
-      message: "Razorpay order created. Proceed to payment.",
-      bookingId: booking._id,
-      razorpayKey: process.env.RAZORPAY_KEY_ID,
+      total_price: totalPrice,
+      status: "pending",
       order_id: razorpayOrder.id,
-      amount: razorpayOrder.amount,
-      currency: razorpayOrder.currency,
-      room,
-      totalAmount,
-      totalDays,
-      checkInDate,
-      checkOutDate,
     });
+    // console.log("Booking created:", newBooking);
+    await newBooking.save();
 
+    res.status(201).json({
+      message: "Booking initiated. Complete payment to confirm.",
+      booking: newBooking,
+      razorpayOrder,
+      key_id: process.env.RAZORPAY_KEY_ID,
+    });
   } catch (err) {
     console.error("🔥 Booking error:", err);
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: "Booking failed", details: err.message });
   }
 };
 
-
-
-
-
-
-
-module.exports = { bookRoom };
-
-
+module.exports = { createBooking };

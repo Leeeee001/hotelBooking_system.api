@@ -1,19 +1,17 @@
 const { z } = require("zod");
 
-// Booking Schema (User books a room)
+// Booking Schema
 const bookRoomSchema = z.object({
-  body: z.object({
-    roomId: z.string().length(24, "Invalid Room ID"),
-    checkInDate: z.string().refine((val) => !isNaN(Date.parse(val)), {
-      message: "Invalid check-in date",
-    }),
-    checkOutDate: z.string().refine((val) => !isNaN(Date.parse(val)), {
-      message: "Invalid check-out date",
-    }),
+  roomId: z.string().length(24),
+  checkInDate: z.string().refine((val) => !isNaN(Date.parse(val)), {
+    message: "Invalid check-in date format",
+  }),
+  checkOutDate: z.string().refine((val) => !isNaN(Date.parse(val)), {
+    message: "Invalid check-out date format",
   }),
 });
 
-// Cancel Booking (by booking ID in URL)
+// Cancel Booking
 const cancelBookingSchema = z.object({
   id: z.string().length(24, "Invalid Booking ID"),
 });
