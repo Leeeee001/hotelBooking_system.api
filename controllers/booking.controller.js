@@ -78,7 +78,7 @@ const createBooking = async (req, res) => {
       key_id: process.env.RAZORPAY_KEY_ID,
     });
   } catch (err) {
-    console.error("🔥 Booking error:", err);
+    console.error("Booking error:", err);
     res.status(500).json({ error: "Booking failed", details: err.message });
   }
 };

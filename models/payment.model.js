@@ -3,12 +3,14 @@ const mongoose = require("mongoose");
 const paymentSchema = new mongoose.Schema({
     user_id: {type: mongoose.Schema.Types.ObjectId, ref: "User", required: true},
     booking_id: {type: mongoose.Schema.Types.ObjectId, ref: "Booking", required: true},
+    order_id: { type: String }, 
+    payment_id: { type: String, unique: true }, 
     amount: {type: Number, required: true, min: 0},
     bookedOn: { type: Date, default: Date.now },
     payment_method: {type: String, required: true, enum: ["credit_card", "debit_card", "bank_transfer", "digital_wallet", "upi"]},
     payment_status: {type: String, required: true, enum: ["pending", "completed", "failed", "refunded"], default: "pending"},
     transaction_id: {type: String, unique: true},
-    payment_date: {type: Date, default: Date.now},
+    payment_date: {type: Date},
     refund_date: {type: Date},
     billing_info: {
         name: { type: String },

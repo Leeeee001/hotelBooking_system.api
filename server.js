@@ -7,6 +7,7 @@ const userRoute = require("./routes/user.route");
 const adminRoute = require("./routes/admin.route");
 const roomRoute = require("./routes/room.route");
 const bookingRoute = require("./routes/booking.route");
+const paymentRoute = require("./routes/payment.route");
 const passport = require("./config/passport"); 
 const app = express();
 
@@ -38,11 +39,12 @@ app.get("/", (req, res) => {
 app.use(passport.initialize());
 app.use("/uploads", express.static("uploads"));
 
-app.use("/auth", authRoute);
-app.use("/user", userRoute);
-app.use("/admin", adminRoute);
-app.use("/room", roomRoute); 
-app.use("/booking", bookingRoute); 
+app.use("/api/auth", authRoute);
+app.use("/api/user", userRoute);
+app.use("/api/admin", adminRoute);
+app.use("/api/room", roomRoute); 
+app.use("/api/booking", bookingRoute);
+app.use("/api/payment", paymentRoute); 
 
 
 // 404 Handler

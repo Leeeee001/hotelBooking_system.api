@@ -1,4 +1,4 @@
-// services/paymentService.js
+const crypto = require("node:crypto");
 const razorpay = require("./razorpayInstance");
 
 
@@ -14,4 +14,14 @@ const createRazorpayOrder = async (amount) => {
   return order;
 };
 
-module.exports = { createRazorpayOrder };
+const verifyPaymentSignature = ({ razorpay_order_id, razorpay_payment_id, razorpay_signature }) => {
+  const generatedSignature = crypto
+    .createHmac("sha256", razorpay.key_secret)
+    .update(`${razorpay_order_id}|${razorpay_payment_id}`)
+    .digest("hex");
+
+  return generatedSignature === razorpay_signature;
+};
+
+module.exports = { createRazorpayOrder, verifyPaymentSignature };
+
