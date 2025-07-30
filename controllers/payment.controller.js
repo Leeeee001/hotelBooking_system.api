@@ -47,7 +47,6 @@ const verifyPayment = async (req, res) => {
       transaction_id: razorpay_payment_id,
       payment_method: paymentMethod,
       payment_status: "completed",
-      billing_info,
       payment_date: new Date(),
     });
 
