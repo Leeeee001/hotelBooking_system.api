@@ -49,9 +49,10 @@ const verifyPayment = async (req, res) => {
       payment_id: razorpay_payment_id,
       razorpay_signature,
       amount: booking.total_price,
+      bookedOn: booking.createdAt,
       currency: booking.currency,
-      transaction_id: razorpay_payment_id,
       payment_method: paymentMethod,
+      transaction_id: razorpay_payment_id,
       payment_status: "completed",
       payment_date: new Date(),
     });
