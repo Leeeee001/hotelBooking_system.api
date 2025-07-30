@@ -23,5 +23,15 @@ const verifyPaymentSignature = ({ razorpay_order_id, razorpay_payment_id, razorp
   return generatedSignature === razorpay_signature;
 };
 
-module.exports = { createRazorpayOrder, verifyPaymentSignature };
+const fetchPaymentDetails = async (razorpay_payment_id) => {
+  try {
+    const payment = await razorpay.payments.fetch(razorpay_payment_id);
+    return payment; // Contains .method, .status, etc.
+  } catch (error) {
+    throw new Error("Failed to fetch payment details from Razorpay");
+  }
+};
+
+
+module.exports = { createRazorpayOrder, verifyPaymentSignature, fetchPaymentDetails };
 
