@@ -7,6 +7,23 @@ const { verifyPaymentSchema } = require("../validation/payment.validation");
 
 router.post("/verify", authenticate, validate(verifyPaymentSchema), verifyPayment);
 
+// TEST ROUTE TO SHOW Razorpay payment popup (HBS page)
+router.get("/test-payment", (req, res) => {
+  const { order_id, amount, booking_id } = req.query;
+
+  if (!order_id || !amount || !booking_id) {
+    return res.status(400).send("Missing required fields");
+  }
+
+  res.render("razorpay-payment", {
+    layout: false,
+    key_id: process.env.RAZORPAY_KEY_ID,
+    order_id,
+    amount,
+    booking_id,
+  });
+});
+
 
 module.exports = router;
 

@@ -13,10 +13,16 @@ const app = express();
 
 // Body parser middleware to parse incoming request bodies
 app.use(express.json());
-
 const bodyParser = require("body-parser");
-app.use(bodyParser.urlencoded());
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
+
+// Setup Handlebars
+const path = require("path");
+const exphbs = require("express-handlebars");
+app.engine("hbs", exphbs.engine({ extname: ".hbs", layoutsDir: false }));
+app.set("view engine", "hbs");
+app.set("views", path.join(__dirname, "views")); 
 
 // swagger doc packages
 const swaggerJsdoc = require("swagger-jsdoc");

@@ -66,6 +66,7 @@ const createBooking = async (req, res) => {
       days: totalDays,
       total_price: totalPrice,
       status: "pending",
+      payment_status: "pending",
       order_id: razorpayOrder.id,
     });
     // console.log("Booking created:", newBooking);
@@ -76,7 +77,9 @@ const createBooking = async (req, res) => {
       booking: newBooking,
       razorpayOrder,
       key_id: process.env.RAZORPAY_KEY_ID,
+      redirect_url: `http://localhost:3000/api/payment/test-payment?order_id=${razorpayOrder.id}&amount=${razorpayOrder.amount}&booking_id=${newBooking._id}`, // for testing verify route for Razorpay payment popup
     });
+
   } catch (err) {
     console.error("Booking error:", err);
     res.status(500).json({ error: "Booking failed", details: err.message });

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Razorpay Payment</title>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <style>
+    body {
+      background-color: #121212;
+      color: #f5f5f5;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Processing Your Payment...</h1>
+
+  <script>
+    const options = {
+      key: "{{key_id}}", // Razorpay Key ID
+      amount: Number("{{amount}}"), // Amount in paise (must be number)
+      currency: "INR", // INR, USD, etc.
+      name: "{{name}}", // Company or website name
+      description: "{{description}}", 
+      order_id: "{{order_id}}", 
+
+      console.log("Payment Response:", response);
+
+      handler: async function (response) {
+        const data = {
+          razorpay_order_id: response.razorpay_order_id,
+          razorpay_payment_id: response.razorpay_payment_id,
+          razorpay_signature: response.razorpay_signature,
+          booking_id: "{{booking_id}}"
+        };
+        console.log("Payment Data:", data);
+        
+
+        try {
+          const result = await fetch("/api/payment/verify", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+          });
+
+          const resJson = await result.json();
+          if (resJson.success) {
+            alert("✅ Payment Confirmed!");
+            resJson.json("Payment Verification Success:", resJson);
+          } else {
+            alert("❌ Payment Failed!");
+            resJson.json("Payment Verification Failed:", resJson);
+          }
+        } catch (error) {
+          response.json("Verification Error:", error);
+          alert("❌ Something went wrong during verification.");
+        }
+      },
+
+      theme: {
+        color: "#1DB954" 
+      }
+    };
+
+    const rzp = new Razorpay(options);
+    rzp.open();
+
+    rzp.on('payment.failed', function (response) {
+      alert("❌ Payment Failed. Reason: " + response.error.description);
+      console.error("Payment Failed:", response.error);
+    });
+  </script>
+</body>
+</html>
+
