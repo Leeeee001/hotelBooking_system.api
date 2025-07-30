@@ -5,7 +5,7 @@ const { verifyPaymentSignature } = require("../services/paymentService");
 
 const verifyPayment = async (req, res) => {
   try {
-    const { razorpay_order_id, razorpay_payment_id, razorpay_signature, bookingId, payment_method, billing_info } = req.body;
+    const { razorpay_order_id, razorpay_payment_id, razorpay_signature, bookingId } = req.body;
     // console.log("Payment Verification Request:", req.body);
 
     // Signature Verification
